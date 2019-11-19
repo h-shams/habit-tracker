@@ -1,0 +1,142 @@
+@import 'variables';
+
+html{
+  box-sizing: border-box;
+}
+html *, html *::after, html *::before{
+  box-sizing: inherit;
+}
+
+
+.th{
+  font-family: sans-serif;
+
+  &__weekdays{
+    width: 100%;
+    list-style: none;
+    padding: 0 .5em;
+    padding-left: 7em * 1.25 + .5em;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #333;
+    color: #eee;
+    border-radius: .25em;
+  }
+
+  &__weekday{
+    width: 0;
+    padding: 1em .5em;
+    flex: 1 0 auto;
+  }
+
+  &__weekday-text{
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__task-list-container{
+    padding: .5em;
+  }
+
+}
+
+.task-list {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  color: #444;
+
+  &__title{
+    font-size: 1.25em;
+    margin: 1em;
+    width: 5em;
+    text-align: center;
+  }
+
+  &__task-list{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    flex-grow: 1;
+  }
+}
+
+.task {
+  flex-grow: 1;
+  position: relative;
+
+  &__circle{
+    width: 1.5em;
+    height: 1.5em;
+    background-color: $task--background-color;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: $task--border-width solid $task--border-color;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  &--value-true .task__circle{
+    background-image: url('../images/task-icon-true.svg');
+    border-color: $task--value-true-color;
+  }
+
+  &--value-false .task__circle{
+    background-image: url('../images/task-icon-false.svg');
+    border-color: $task--value-false-color;
+  }
+
+  &--value-none .task__circle{
+    border-color: $task--value-none-color;
+  }
+
+
+  &::after{
+    content: "";
+    display: block;
+    position: absolute;
+    height: $task--timeline-width;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    background-color: $task--timeline-color;
+    z-index: -1;
+    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%);
+
+  }
+
+  &:first-child::after{
+    border-radius: 50em 0 0 50em;
+  }
+  &:last-child::after{
+    border-radius: 0 50em 50em 0;
+  }
+
+
+
+  &--value-none::after{
+    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+                      linear-gradient(90deg, transparent 0%, transparentize($task--value-none-color, .3) 40%, transparentize($task--value-none-color, .3) 60%, transparent 100%);
+  }
+
+  &--value-false::after{
+    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+    linear-gradient(90deg, transparent 0%, transparentize($task--value-false-color, .3) 40%, transparentize($task--value-false-color, .3) 60%, transparent 100%);
+  }
+
+  &--value-true::after{
+    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+                      linear-gradient(90deg, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
+  }
+}
