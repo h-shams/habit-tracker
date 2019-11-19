@@ -4,11 +4,11 @@
   "description": "A habbit and goal tracker!",
   "main": "index.js",
   "scripts": {
-    "start": "run-p server sass broserify watch:js",
+    "start": "run-p server sass watch:js copy:js",
     "server": "browser-sync start --server src --serveStatic .tmp --files .tmp, \"src/**/*.html\"",
     "sass": "node-sass src/styles/main.scss .tmp/styles/main.css -w",
-    "broserify": "browserify --debug src/scripts/core.js -o .tmp/scripts/core.js",
-    "watch:js": "onchange \"src/scripts/**/*.js\" -- npm run broserify"
+    "watch:js": "onchange \"src/scripts/**/*.js\" -- npm run copy:js",
+    "copy:js": "copyfiles --up 2 --all src/scripts/**/* .tmp/scripts"
   },
   "author": "Heydar Shams",
   "license": "ISC"
