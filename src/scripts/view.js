@@ -17,8 +17,6 @@ function createView(taskListsArr){
   })
 }
 
-createView(j)
-
 function createTask(object) {
   // TODO: data validation needed
   let task = document.createElement('div')
@@ -56,4 +54,40 @@ function createTaskList(object) {
   taskList.appendChild(taskListTaskContainer)
 
   return taskList
+}
+
+window.addEventListener('click', (event) =>{
+  let taskObject = clickHandler(event)
+  if(taskObject){
+    // send taskObject to core.js
+  }
+})
+
+function clickHandler(event) {
+  let taskElement
+  if(event.target.classList.contains('task__circle')){
+    taskElement = event.target.parentElement
+  }else{
+    return undefined
+  }
+
+  let taskObject = {
+    id: taskElement.id,
+  }
+
+  if(taskElement.classList.contains('task--value-true')){
+    taskObject.value = true
+  }else if(taskElement.classList.contains('task--value-false')){
+    taskObject.value = false
+  }else if(taskElement.classList.contains('task--value-none')){
+    taskObject.value = 'none'
+  }
+
+  if(taskElement.classList.contains('task--state-enable')){
+    taskObject.state = 'enable'
+  }else if(taskElement.classList.contains('task--state-disable')){
+    taskObject.state = 'disable'
+  }
+
+
 }
