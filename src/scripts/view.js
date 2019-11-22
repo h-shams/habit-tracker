@@ -2,7 +2,6 @@ function createView(taskListsArr){
 
   // TODO: data validation needed
   let taskListContainer = document.getElementById('taskListContainer')
-  taskListsArr = JSON.parse(taskListsArr)
 
   taskListsArr.forEach( taskList => {
     let taskListElement = createTaskList(taskList)
@@ -15,6 +14,13 @@ function createView(taskListsArr){
 
   taskListContainer.appendChild(taskListElement)
   })
+  console.log('view created')
+}
+
+function reloadView(taskListsArr) {
+  document.getElementById('taskListContainer').innerHTML = ''
+  createView(taskListsArr)
+  console.log('view reloaded')
 }
 
 function createTask(object) {
@@ -35,6 +41,33 @@ function createTask(object) {
   }
 
   return task
+}
+
+function reloadTask(object) {
+  let taskListElements = document.getElementById('taskListContainer').children
+  var task = null
+  for (let i = 0; i < taskListElements.length; i++) {
+    let taskElements = taskListElements[i].children[1].children
+    for (let j = 0; j < taskElements.length; j++) {
+      let id = Number.parseInt(taskElements[j].id.slice(1))
+      // console.log(taskElements[j].id +" : "+ id)
+      if(id === object.id){
+        task = taskElements[j]
+      }
+    }
+  }
+
+  task.classList.remove('task--value-true')
+  task.classList.remove('task--value-false')
+  task.classList.remove('task--value-none')
+
+  if(object.value === true){
+    task.classList.add('task--value-true')
+  }else if(object.value === false){
+    task.classList.add('task--value-false')
+  }else if(object.value === 'none'){
+    task.classList.add('task--value-none')
+  }
 }
 
 function createTaskList(object) {
@@ -59,7 +92,7 @@ function createTaskList(object) {
 window.addEventListener('click', (event) =>{
   let taskObject = clickHandler(event)
   if(taskObject){
-    // send taskObject to core.js
+    taskClicked(taskObject)
   }
 })
 
@@ -68,11 +101,11 @@ function clickHandler(event) {
   if(event.target.classList.contains('task__circle')){
     taskElement = event.target.parentElement
   }else{
-    return undefined
+    return null
   }
 
   let taskObject = {
-    id: taskElement.id,
+    id: Number.parseInt(taskElement.id.slice(1)),
   }
 
   if(taskElement.classList.contains('task--value-true')){
@@ -89,5 +122,5 @@ function clickHandler(event) {
     taskObject.state = 'disable'
   }
 
-
+  return taskObject
 }
