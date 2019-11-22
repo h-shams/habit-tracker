@@ -83,6 +83,7 @@ html *, html *::after, html *::before{
     background-size: 80% 80%;
     background-repeat: no-repeat;
     background-position: center center;
+    transition: .2s ease all;
   }
 
   &--value-true .task__circle{
