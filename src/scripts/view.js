@@ -1,7 +1,14 @@
 function createView(taskListsArr){
 
   // TODO: data validation needed
-  let taskListContainer = document.getElementById('taskListContainer')
+  let mainElemnet = document.querySelector('.th')
+
+  mainElemnet.appendChild(createWeekdays(taskListsArr))
+
+  let taskListContainer = document.createElement('div')
+  taskListContainer.id = 'taskListContainer'
+  mainElemnet.appendChild(taskListContainer)
+
 
   taskListsArr.forEach( taskList => {
     let taskListElement = createTaskList(taskList)
@@ -87,6 +94,30 @@ function createTaskList(object) {
   taskList.appendChild(taskListTaskContainer)
 
   return taskList
+}
+
+function createWeekdays(object) {
+  // TODO: data validation needed
+  let mainElemnet = document.querySelector('.th')
+
+  let weekdays = document.createElement('ul')
+  weekdays.classList.add('th__weekdays')
+
+  object[0].nodesArray.forEach( task => {
+    let weekday = document.createElement('li')
+    weekday.classList.add('th__weekday')
+
+    let text = document.createElement('span')
+    text.classList.add('th__weekday-text')
+    let day = new Date(task.date).getDate()
+    let month = new Date(task.date).getMonth() + 1
+    text.innerHTML = day + '/' + month
+
+    weekday.appendChild(text)
+    weekdays.appendChild(weekday)
+  })
+
+  return weekdays
 }
 
 window.addEventListener('click', (event) =>{
