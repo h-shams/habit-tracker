@@ -2,14 +2,32 @@
 
 html{
   box-sizing: border-box;
+  height: 100vh;
 }
 html *, html *::after, html *::before{
   box-sizing: inherit;
 }
 
+body{
+  height: 100%;
+}
+
 
 .th{
   font-family: sans-serif;
+  height: 100%;
+
+  &--no-tl-error{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__no-tl-error{
+    color: #555;
+    text-align: center;
+  }
 
   &__weekdays{
     width: 100%;

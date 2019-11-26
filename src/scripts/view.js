@@ -3,6 +3,16 @@ function createView(taskListsArr){
   // TODO: data validation needed
   let mainElemnet = document.querySelector('.th')
 
+  if(taskListsArr.length === 0){
+    mainElemnet.classList.add('th--no-tl-error')
+    mainElemnet.innerHTML = `
+      <div class="th__no-tl-error">
+        <h1>Nothing to show!</h1>
+        <span>add some task lists<span>
+      </div>`
+      return false
+  }
+
   mainElemnet.appendChild(createWeekdays(taskListsArr))
 
   let taskListContainer = document.createElement('div')
