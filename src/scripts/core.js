@@ -19,8 +19,34 @@ function saveAllData(object, taskListKey){
 }
 
 
+function addTaskToEndTaskList(date){
+  let taskListsArray = getAllData()
+  let i = 0
+  taskListsArray.forEach( taskList => {
+    let task = new Task('none', date)
+    taskList.nodesArray.push(task)
+    saveAllData(taskList, JSON.parse(localStorage.getItem('TaskList-id-list'))[i])
+    i++
+  })
+}
+
+function core(){
+  let tasksArray = getAllData()[0].nodesArray
+  let lastChangeDate = Date.parse(tasksArray[tasksArray.length-1].date)
+  let msBetween = Date.now() - lastChangeDate
+  let daysBetween = Math.floor(msBetween / (24*60*60*1000))
+
+  while (daysBetween > 0) {
+    let date = new Date(lastChangeDate).toISOString().split('T')[0]
+    addTaskToEndTaskList(date)
+    lastChangeDate += (24*60*60*1000)
+    --daysBetween
+    console.log('one day is added')
+  }
+}
 
 createView(getAllData())
+
 
 function taskClicked(taskObject) {
   let id = taskObject.id
