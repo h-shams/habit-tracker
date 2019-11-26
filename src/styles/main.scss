@@ -15,20 +15,32 @@ html *, html *::after, html *::before{
     width: 100%;
     list-style: none;
     padding: 0 .5em;
-    padding-left: 7em * 1.25 + .5em;
+    padding-left: 7em * 1.25;
     margin: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
-    background-color: #333;
     color: #eee;
-    border-radius: .25em;
+    // position: relative;
+
+    &::after{
+      content: '';
+      border-radius: .25em;
+      background-color: #333;
+      position: fixed;
+      top: .5em;
+      right: .5em;
+      left: .5em;
+      height: 3.5em;
+      z-index: -1;
+    }
   }
 
   &__weekday{
     width: 0;
     padding: 1em .5em;
     flex: 1 0 auto;
+    min-width: $task-min-width;
   }
 
   &__weekday-text{
@@ -59,6 +71,7 @@ html *, html *::after, html *::before{
     margin: 1em;
     width: 5em;
     text-align: center;
+    flex-shrink: 0;
   }
 
   &__task-list{
@@ -72,6 +85,7 @@ html *, html *::after, html *::before{
 .task {
   flex-grow: 1;
   position: relative;
+  min-width: $task-min-width;
 
   &__circle{
     width: 1.5em;
