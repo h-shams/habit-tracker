@@ -5,19 +5,26 @@ function createView(taskListsArr){
 
   if(taskListsArr.length === 0){
     mainElemnet.classList.add('th--no-tl-error')
-    mainElemnet.innerHTML = `
-      <div class="th__no-tl-error">
-        <h1>Nothing to show!</h1>
-        <span>add some task lists<span>
-      </div>`
-      return false
+    return false
+  }else{
+    mainElemnet.classList.remove('th--no-tl-error')
   }
 
-  mainElemnet.appendChild(createWeekdays(taskListsArr))
+  if(document.querySelector('.th__weekdays')){
+    let ul = document.querySelector('.th__weekdays')
+    ul.replaceWith(createWeekdays(taskListsArr))
+  }else{
+    mainElemnet.appendChild(createWeekdays(taskListsArr))
+  }
 
-  let taskListContainer = document.createElement('div')
-  taskListContainer.id = 'taskListContainer'
-  mainElemnet.appendChild(taskListContainer)
+  let taskListContainer
+  if(document.querySelector('#taskListContainer')){
+    taskListContainer = document.querySelector('#taskListContainer')
+  }else{
+    taskListContainer = document.createElement('div')
+    taskListContainer.id = 'taskListContainer'
+    mainElemnet.appendChild(taskListContainer)
+  }
 
 
   taskListsArr.forEach( taskList => {
@@ -35,7 +42,9 @@ function createView(taskListsArr){
 }
 
 function reloadView(taskListsArr) {
-  document.getElementById('taskListContainer').innerHTML = ''
+  if(document.getElementById('taskListContainer')){
+    document.getElementById('taskListContainer').innerHTML = ''
+  }
   createView(taskListsArr)
   console.log('view reloaded')
 }
@@ -109,10 +118,19 @@ function createTaskList(object) {
 function createWeekdays(object) {
   // TODO: data validation needed
   let mainElemnet = document.querySelector('.th')
+  let weekdays
 
-  let weekdays = document.createElement('ul')
-  weekdays.classList.add('th__weekdays')
-
+  if(document.querySelector('.th__weekdays')){
+    console.log('nothing :D')
+    weekdays = document.querySelector('.th__weekdays')
+  }else{
+    console.log('nothing :D else!')
+    weekdays = document.createElement('ul')
+    weekdays.classList.add('th__weekdays')
+  }
+  for (var i = 0; i < weekdays.children.length; i++) {
+    weekdays.removeChild(weekdays.children[i])
+  }
   object[0].nodesArray.forEach( task => {
     let weekday = document.createElement('li')
     weekday.classList.add('th__weekday')

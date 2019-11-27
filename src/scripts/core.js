@@ -11,7 +11,12 @@ if(localStorage.getItem('TaskList-id-list') === null){
 function core(){
   if(getAllData().length > 0){
     let tasksArray = getAllData()[0].nodesArray
-    let lastChangeDate = Date.parse(tasksArray[tasksArray.length-1].date)
+    let lastChangeDate
+    if(tasksArray.length === 0){
+      lastChangeDate = Date.now()
+    }else{
+      lastChangeDate = Date.parse(tasksArray[tasksArray.length-1].date)
+    }
     let msBetween = Date.now() - lastChangeDate
     let daysBetween = Math.floor(msBetween / (24*60*60*1000))
 
@@ -51,8 +56,19 @@ function saveAllData(object, taskListKey){
 }
 
 
-function addTaskToEndTaskList(date){
-  let taskListsArray = getAllData()
+function addTaskToEndTaskList(date, taskListId){
+  let taskListsArray
+  if(taskListId){
+    getAllData().forEach( item => {
+      if(item.id === taskListId){
+        taskListsArray = []
+        taskListsArray.push(item)
+      }
+    })
+  }else{
+    taskListsArray = getAllData()
+  }
+
   taskListsArray.forEach( taskList => {
     let task = new Task('none', date)
     taskList.nodesArray.push(task)
@@ -60,6 +76,19 @@ function addTaskToEndTaskList(date){
   })
 }
 
+function addNewTaskList(title, des=null){
+  let taskList = new TaskList(title, des)
+  let taskListsIdList = localStorage.getItem('TaskList-id-list')
+  taskListsIdList = JSON.parse(taskListsIdList)
+  taskListsIdList.push('TaskList-'+taskList.title)
+
+  localStorage.setItem('TaskList-id-list', JSON.stringify(taskListsIdList))
+  localStorage.setItem('TaskList-'+taskList.title, JSON.stringify(taskList))
+
+  addTaskToEndTaskList( new Date().toISOString().split('T')[0], taskList.id)
+
+  reloadView(getAllData())
+}
 
 function taskClicked(taskObject) {
   let id = taskObject.id
@@ -95,17 +124,6 @@ function taskClicked(taskObject) {
   })
 }
 
-function addNewTaskList(title, des=null){
-  let taskList = new TaskList(title, des)
-  let taskListsIdList = localStorage.getItem('TaskList-id-list')
-  taskListsIdList = JSON.parse(taskListsIdList)
-  taskListsIdList.push('TaskList-'+taskList.title)
-
-  localStorage.setItem('TaskList-id-list', JSON.stringify(taskListsIdList))
-  localStorage.setItem('TaskList-'+taskList.title, JSON.stringify(taskList))
-
-  reloadView(getAllData())
-}
 
 function removeTaskList(id){
   let taskListTitle

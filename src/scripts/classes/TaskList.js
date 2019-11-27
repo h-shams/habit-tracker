@@ -8,6 +8,7 @@ class TaskList {
     this.id = idGen('TaskList')
     this.isChanged = true
     this.lastChangeDate = new Date().toISOString()
+    this.creationDate = new Date().toISOString().split('T')[0]
     this.des = des
   }
 
