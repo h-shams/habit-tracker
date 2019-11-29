@@ -11,25 +11,4 @@ class Task {
     this.state = state
     this.des = des
   }
-
-  changeValue(newValue){
-    // TODO: create setter instead of this methode
-    this.value = newValue
-    this.isChanged = true
-    this.lastChangeDate = new Date().toISOString()
-  }
-
-  changeState(newState){
-    // TODO: create setter instead of this methode
-    this.state = newState
-    this.isChanged = true
-    this.lastChangeDate = new Date().toISOString()
-  }
-
-  changeDes(newDes){
-    // TODO: create setter instead of this methode
-    this.des = newDes
-    this.isChanged = true
-    this.lastChangeDate = new Date().toISOString()
-  }
 }
