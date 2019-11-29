@@ -22,20 +22,22 @@ function core(){
   if(db.getAllData().length > 0){
     let tasksArray = db.getAllData()[0].nodesArray
     let lastChangeDate
+    let daysBetween
+    
     if(tasksArray.length === 0){
       lastChangeDate = Date.now()
+      daysBetween = 1
     }else{
       lastChangeDate = Date.parse(tasksArray[tasksArray.length-1].date)
+      let msBetween = Date.now() - lastChangeDate
+      daysBetween = Math.floor(msBetween / (24*60*60*1000))
     }
-    let msBetween = Date.now() - lastChangeDate
-    let daysBetween = Math.floor(msBetween / (24*60*60*1000))
 
     while (daysBetween > 0) {
       let date = new Date(lastChangeDate).toISOString().split('T')[0]
       addTaskToEndTaskList(date)
       lastChangeDate += (24*60*60*1000)
       --daysBetween
-
       console.log('one day is added')
     }
   }
