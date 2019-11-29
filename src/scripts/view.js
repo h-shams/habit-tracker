@@ -1,6 +1,5 @@
 export default {
    createView(taskListsArr){
-     console.log('createView: '+ createWeekdays(taskListsArr))
     // TODO: data validation needed
     let mainElemnet = document.querySelector('.th')
 
@@ -49,6 +48,26 @@ export default {
     createView(taskListsArr)
     console.log('view reloaded')
   }
+}
+
+function createTask(object) {
+  // TODO: data validation needed
+  let task = document.createElement('div')
+  task.classList.add('task')
+  task.id = 't' + object.id
+  let circle = document.createElement('div')
+  circle.classList.add('task__circle')
+  task.appendChild(circle)
+
+  if(object.value === true){
+    task.classList.add('task--value-true')
+  }else if(object.value === false){
+    task.classList.add('task--value-false')
+  }else if(object.value === 'none'){
+    task.classList.add('task--value-none')
+  }
+
+  return task
 }
 
  function reloadTask(object) {
