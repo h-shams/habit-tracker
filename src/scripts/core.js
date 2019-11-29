@@ -13,6 +13,11 @@ if(localStorage.getItem('TaskList-id-list') === null){
   localStorage.setItem('TaskList-id-list', '[]')
 }
 
+view.onclick = event => {
+  console.log(event)
+  taskClicked(event)
+}
+
 function core(){
   if(db.getAllData().length > 0){
     let tasksArray = db.getAllData()[0].nodesArray
@@ -37,7 +42,41 @@ function core(){
 }
 
 core()
-view.createView(db.getAllData())
+view.create(db.getAllData())
+
+function taskClicked(taskObject) {
+  let id = taskObject.id
+  // id = Number.parseInt(id)
+
+  let taskListsArray = []
+  let taskListIDs = JSON.parse(localStorage.getItem('TaskList-id-list'))
+
+  taskListIDs.forEach( taskList => {
+
+    let taskListJson = localStorage.getItem(taskList)
+    let taskListObject = JSON.parse(taskListJson)
+    taskListObject.nodesArray.forEach( task => {
+      if(task.id === id){
+        if(task.value === true){
+          task.value = false
+          task.isChanged = true
+          task.lastChangeDate = new Date().toISOString()
+        }else if(task.value === false){
+          task.value = true
+          task.isChanged = true
+          task.lastChangeDate = new Date().toISOString()
+        }else if(task.value === 'none'){
+          task.value = true
+          task.isChanged = true
+          task.lastChangeDate = new Date().toISOString()
+        }
+        db.saveAllData(taskListObject, taskList)
+        view.reloadTask(task)
+      }
+    })
+
+  })
+}
 
 function addTaskToEndTaskList(date, taskListId){
   let taskListsArray
@@ -70,43 +109,8 @@ function addNewTaskList(title, des=null){
 
   addTaskToEndTaskList( new Date().toISOString().split('T')[0], taskList.id)
 
-  view.reloadView(db.getAllData())
+  view.reload(db.getAllData())
 }
-
-function taskClicked(taskObject) {
-  let id = taskObject.id
-  // id = Number.parseInt(id)
-
-  let taskListsArray = []
-  let taskListIDs = JSON.parse(localStorage.getItem('TaskList-id-list'))
-
-  taskListIDs.forEach( taskList => {
-
-    taskListJson = localStorage.getItem(taskList)
-    taskListObject = JSON.parse(taskListJson)
-    taskListObject.nodesArray.forEach( task => {
-      if(task.id === id){
-        if(task.value === true){
-          task.value = false
-          task.isChanged = true
-          task.lastChangeDate = new Date().toISOString()
-        }else if(task.value === false){
-          task.value = true
-          task.isChanged = true
-          task.lastChangeDate = new Date().toISOString()
-        }else if(task.value === 'none'){
-          task.value = true
-          task.isChanged = true
-          task.lastChangeDate = new Date().toISOString()
-        }
-        db.saveAllData(taskListObject, taskList)
-        reloadTask(task)
-      }
-    })
-
-  })
-}
-
 
 function removeTaskList(id){
   let taskListTitle
@@ -134,6 +138,6 @@ function removeTaskList(id){
   localStorage.removeItem(taskListTitle)
   localStorage.setItem('TaskList-id-list', JSON.stringify(newTaskListsIdList))
 
-  view.reloadView(db.getAllData())
+  view.reload(db.getAllData())
   return true
 }

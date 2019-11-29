@@ -1,5 +1,5 @@
-export default {
-   createView(taskListsArr){
+let view = {
+  create(taskListsArr){
     // TODO: data validation needed
     let mainElemnet = document.querySelector('.th')
 
@@ -41,13 +41,42 @@ export default {
     console.log('view created')
   },
 
-   reloadView(taskListsArr) {
+  reload(taskListsArr) {
     if(document.getElementById('taskListContainer')){
       document.getElementById('taskListContainer').innerHTML = ''
     }
     createView(taskListsArr)
     console.log('view reloaded')
+  },
+
+  reloadTask(object) {
+    let taskListElements = document.getElementById('taskListContainer').children
+    var task = null
+    for (let i = 0; i < taskListElements.length; i++) {
+      let taskElements = taskListElements[i].children[1].children
+      for (let j = 0; j < taskElements.length; j++) {
+        let id = Number.parseInt(taskElements[j].id.slice(1))
+        // console.log(taskElements[j].id +" : "+ id)
+        if(id === object.id){
+          task = taskElements[j]
+        }
+      }
   }
+
+  task.classList.remove('task--value-true')
+  task.classList.remove('task--value-false')
+  task.classList.remove('task--value-none')
+
+  if(object.value === true){
+    task.classList.add('task--value-true')
+  }else if(object.value === false){
+    task.classList.add('task--value-false')
+  }else if(object.value === 'none'){
+    task.classList.add('task--value-none')
+  }
+},
+
+  onclick: null
 }
 
 function createTask(object) {
@@ -70,34 +99,8 @@ function createTask(object) {
   return task
 }
 
- function reloadTask(object) {
-  let taskListElements = document.getElementById('taskListContainer').children
-  var task = null
-  for (let i = 0; i < taskListElements.length; i++) {
-    let taskElements = taskListElements[i].children[1].children
-    for (let j = 0; j < taskElements.length; j++) {
-      let id = Number.parseInt(taskElements[j].id.slice(1))
-      // console.log(taskElements[j].id +" : "+ id)
-      if(id === object.id){
-        task = taskElements[j]
-      }
-    }
-  }
 
-  task.classList.remove('task--value-true')
-  task.classList.remove('task--value-false')
-  task.classList.remove('task--value-none')
-
-  if(object.value === true){
-    task.classList.add('task--value-true')
-  }else if(object.value === false){
-    task.classList.add('task--value-false')
-  }else if(object.value === 'none'){
-    task.classList.add('task--value-none')
-  }
-}
-
- function createTaskList(object) {
+function createTaskList(object) {
   // TODO: data validation needed
   let taskList = document.createElement('div')
   taskList.classList.add('task-list')
@@ -116,7 +119,7 @@ function createTask(object) {
   return taskList
 }
 
- function createWeekdays(object) {
+function createWeekdays(object) {
   // TODO: data validation needed
   let mainElemnet = document.querySelector('.th')
   let weekdays
@@ -149,7 +152,7 @@ function createTask(object) {
   return weekdays
 }
 
- function clickHandler(event) {
+function clickHandler(event) {
   let taskElement
   if(event.target.classList.contains('task__circle')){
     taskElement = event.target.parentElement
@@ -178,10 +181,11 @@ function createTask(object) {
   return taskObject
 }
 
-
 window.addEventListener('click', (event) =>{
   let taskObject = clickHandler(event)
   if(taskObject){
-    taskClicked(taskObject)
+    view.onclick(taskObject)
   }
 })
+
+export default view
