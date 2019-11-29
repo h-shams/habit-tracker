@@ -1,4 +1,6 @@
-class TaskList {
+import idGen from '../modules/idGenerator.js'
+
+export default class TaskList {
   constructor(title, des) {
     // TODO: validating inputs
     // TODO: create "change" methode

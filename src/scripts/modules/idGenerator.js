@@ -1,4 +1,4 @@
-function idGen (type){
+export default function idGenerator (type){
   let lastId, lastIdKey
   // TODO: must have validator
   switch (type) {
