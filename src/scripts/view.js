@@ -45,13 +45,14 @@ let view = {
     if(document.getElementById('taskListContainer')){
       document.getElementById('taskListContainer').innerHTML = ''
     }
-    createView(taskListsArr)
+    this.create(taskListsArr)
     console.log('view reloaded')
   },
 
   reloadTask(object) {
     let taskListElements = document.getElementById('taskListContainer').children
     var task = null
+
     for (let i = 0; i < taskListElements.length; i++) {
       let taskElements = taskListElements[i].children[1].children
       for (let j = 0; j < taskElements.length; j++) {
@@ -61,7 +62,7 @@ let view = {
           task = taskElements[j]
         }
       }
-  }
+    }
 
   task.classList.remove('task--value-true')
   task.classList.remove('task--value-false')
