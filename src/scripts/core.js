@@ -19,27 +19,36 @@ view.onclick = event => {
 }
 
 function core(){
+  console.log(':: CORE ::')
   if(db.getAllData().length > 0){
-    let tasksArray = db.getAllData()[0].nodesArray
-    let lastChangeDate
-    let daysBetween
-    
-    if(tasksArray.length === 0){
-      lastChangeDate = Date.now()
-      daysBetween = 1
-    }else{
-      lastChangeDate = Date.parse(tasksArray[tasksArray.length-1].date)
-      let msBetween = Date.now() - lastChangeDate
-      daysBetween = Math.floor(msBetween / (24*60*60*1000))
-    }
+    db.getAllData().forEach( taskList => {
 
-    while (daysBetween > 0) {
-      let date = new Date(lastChangeDate).toISOString().split('T')[0]
-      addTaskToEndTaskList(date)
-      lastChangeDate += (24*60*60*1000)
-      --daysBetween
-      console.log('one day is added')
-    }
+      let tasksArray = taskList.nodesArray
+      let lastDate
+      let daysBetween
+
+      if(tasksArray.length === 0){
+        lastDate = Date.now() - (24*60*60*1000)
+        daysBetween = 1
+      }else{
+        console.log(taskList.title)
+        lastDate = Date.parse(tasksArray[tasksArray.length-1].date)
+        console.log('lastDate: '+tasksArray[tasksArray.length-1].date)
+        let msBetween = Date.now() - lastDate
+        daysBetween = Math.floor(msBetween / (24*60*60*1000))
+        console.log('daysBetween: '+daysBetween)
+      }
+
+      while (daysBetween > 0) {
+        console.log('WHILE: '+daysBetween)
+        lastDate += (24*60*60*1000)
+        --daysBetween
+        let date = new Date(lastDate).toISOString().split('T')[0]
+        console.log('WHILE-date: '+ date)
+        addTaskToEndTaskList(date, taskList.id)
+        console.log('one day is added')
+      }
+    })
   }
 }
 
@@ -112,34 +121,4 @@ function addNewTaskList(title, des=null){
   addTaskToEndTaskList( new Date().toISOString().split('T')[0], taskList.id)
 
   view.reload(db.getAllData())
-}
-
-function removeTaskList(id){
-  let taskListTitle
-
-  db.getAllData().forEach( item => {
-    if(item.id === id){
-      taskListTitle = 'TaskList-' + item.title
-    }
-  })
-
-  if(typeof taskListTitle !== 'string'){
-    console.error('no such a task list to remove!')
-    return false
-  }
-
-  let taskListsIdList = JSON.parse(localStorage.getItem('TaskList-id-list'))
-  let newTaskListsIdList = []
-
-  taskListsIdList.forEach( item => {
-    if(item !== taskListTitle){
-      newTaskListsIdList.push(item)
-    }
-  })
-
-  localStorage.removeItem(taskListTitle)
-  localStorage.setItem('TaskList-id-list', JSON.stringify(newTaskListsIdList))
-
-  view.reload(db.getAllData())
-  return true
 }
