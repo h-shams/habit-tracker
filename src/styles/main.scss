@@ -74,7 +74,7 @@ body{
   }
 
   &__weekday{
-    width: 0;
+    width: 6em;
     padding: 1em .5em;
     flex: 1 0 auto;
     min-width: $task-min-width;
@@ -114,13 +114,13 @@ body{
   &__task-list{
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-around;
+    justify-content: flex-start;
     flex-grow: 1;
   }
 }
 
 .task {
-  flex-grow: 1;
+  width: 6em;
   position: relative;
   min-width: $task-min-width;
 
@@ -137,21 +137,6 @@ body{
     transition: .2s ease all;
   }
 
-  &--value-true .task__circle{
-    background-image: url('../images/task-icon-true.svg');
-    border-color: $task--value-true-color;
-  }
-
-  &--value-false .task__circle{
-    background-image: url('../images/task-icon-false.svg');
-    border-color: $task--value-false-color;
-  }
-
-  &--value-none .task__circle{
-    border-color: $task--value-none-color;
-  }
-
-
   &::after{
     content: "";
     display: block;
@@ -165,9 +150,7 @@ body{
     background-color: $task--timeline-color;
     z-index: -1;
     background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%);
-
   }
-
   &:first-child::after{
     border-radius: 50em 0 0 50em;
   }
@@ -175,20 +158,36 @@ body{
     border-radius: 0 50em 50em 0;
   }
 
-
-
-  &--value-none::after{
-    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
-                      linear-gradient(90deg, transparent 0%, transparentize($task--value-none-color, .3) 40%, transparentize($task--value-none-color, .3) 60%, transparent 100%);
+  &--value-true .task__circle{
+    background-image: url('../images/task-icon-true.svg');
+    border-color: $task--value-true-color;
   }
-
   &--value-false::after{
     background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
     linear-gradient(90deg, transparent 0%, transparentize($task--value-false-color, .3) 40%, transparentize($task--value-false-color, .3) 60%, transparent 100%);
   }
 
+  &--value-false .task__circle{
+    background-image: url('../images/task-icon-false.svg');
+    border-color: $task--value-false-color;
+  }
   &--value-true::after{
     background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
-                      linear-gradient(90deg, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
+    linear-gradient(90deg, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
+  }
+
+  &--value-none .task__circle{
+    border-color: $task--value-none-color;
+  }
+  &--value-none::after{
+    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+    linear-gradient(90deg, transparent 0%, transparentize($task--value-none-color, .3) 40%, transparentize($task--value-none-color, .3) 60%, transparent 100%);
+  }
+
+  &--state-filler::after{
+    background-image: none;
+  }
+  &--state-filler .task__circle{
+    display: none;
   }
 }
