@@ -149,7 +149,6 @@ function createTask(object, isFiller) {
   return task
 }
 
-
 function createTaskList(object) {
   // TODO: data validation needed
   let taskList = document.createElement('div')
@@ -175,29 +174,47 @@ function createWeekdays(object) {
   let weekdays
 
   if(document.querySelector('.th__weekdays')){
-    console.log('nothing :D')
     weekdays = document.querySelector('.th__weekdays')
   }else{
-    console.log('nothing :D else!')
     weekdays = document.createElement('ul')
     weekdays.classList.add('th__weekdays')
   }
+
   for (var i = 0; i < weekdays.children.length; i++) {
     weekdays.removeChild(weekdays.children[i])
   }
-  object[0].nodesArray.forEach( task => {
+
+  let firstDate = Date.now()
+  let lastDate = 0
+  object.forEach( taskList => {
+    let length = taskList.nodesArray.length
+    let firstDay = Date.parse(taskList.nodesArray[0].date)
+    let lastDay = Date.parse(taskList.nodesArray[length - 1].date)
+    if(firstDay < firstDate){
+      firstDate = firstDay
+    }
+    if(lastDay > lastDate){
+      lastDate = lastDay
+    }
+  })
+
+  let count = Math.floor((lastDate - firstDate) / (24*60*60*1000))
+  let date = firstDate
+  for (let i = 0; i < count + 1; i++) {
     let weekday = document.createElement('li')
     weekday.classList.add('th__weekday')
 
     let text = document.createElement('span')
     text.classList.add('th__weekday-text')
-    let day = new Date(task.date).getDate()
-    let month = new Date(task.date).getMonth() + 1
+    let day = new Date(date).getDate()
+    let month = new Date(date).getMonth() + 1
     text.innerHTML = day + '/' + month
+
+    date += 24*60*60*1000
 
     weekday.appendChild(text)
     weekdays.appendChild(weekday)
-  })
+  }
 
   return weekdays
 }
