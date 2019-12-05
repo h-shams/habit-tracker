@@ -3,6 +3,7 @@ let view = {
     // TODO: data validation needed
     let mainElemnet = document.querySelector('.th')
 
+    //checks if there is no task list shows an error
     if(taskListsArr.length === 0){
       mainElemnet.classList.add('th--no-tl-error')
       return false
@@ -10,6 +11,7 @@ let view = {
       mainElemnet.classList.remove('th--no-tl-error')
     }
 
+    //if weekdays is exist, dont create it again!
     if(document.querySelector('.th__weekdays')){
       let ul = document.querySelector('.th__weekdays')
       ul.replaceWith(createWeekdays(taskListsArr))
@@ -17,6 +19,7 @@ let view = {
       mainElemnet.appendChild(createWeekdays(taskListsArr))
     }
 
+    //if taskListContainer is exist, dont create it again!
     let taskListContainer
     if(document.querySelector('#taskListContainer')){
       taskListContainer = document.querySelector('#taskListContainer')
@@ -26,15 +29,56 @@ let view = {
       mainElemnet.appendChild(taskListContainer)
     }
 
+    let oldestDate = Date.now()
+    let newestDate = 0
+    taskListsArr.forEach( taskList => {
+      let length = taskList.nodesArray.length
+      let firstDay = Date.parse(taskList.nodesArray[0].date)
+      let lastDay = Date.parse(taskList.nodesArray[length - 1].date)
+      if(firstDay < oldestDate){
+        oldestDate = firstDay
+      }
+      if(lastDay > newestDate){
+        newestDate = lastDay
+      }
+    })
+    console.log('oldest:' + new Date(oldestDate))
+    console.log('newest:' + new Date(newestDate))
 
     taskListsArr.forEach( taskList => {
+      let length = taskList.nodesArray.length
       let taskListElement = createTaskList(taskList)
+      let firstDay = Date.parse(taskList.nodesArray[0].date)
+      let lastDay = Date.parse(taskList.nodesArray[length - 1].date)
+      console.log('firstDay: ' + new Date(firstDay))
+      console.log('lastDay: ' + new Date(lastDay))
+      // console.log('IF: ')
+      // console.log(firstDay > oldestDate)
+
+      if(firstDay > oldestDate){
+        let count = Math.floor((firstDay - oldestDate) / (24*60*60*1000))
+        console.log('firstday is less than newest day :' + count);
+        for (let i = 0; i < count; i++) {
+          let taskListTaskListElement = taskListElement.children[1]
+          let taskElement = createTask(null, true)
+          taskListTaskListElement.appendChild(taskElement)
+        }
+      }
 
       taskList.nodesArray.forEach( task => {
         let taskListTaskListElement = taskListElement.children[1]
         let taskElement = createTask(task)
         taskListTaskListElement.appendChild(taskElement)
       })
+
+      if(newestDate > lastDay){
+        let count = Math.floor((newestDate - lastDay) / (24*60*60*1000))
+        for (let i = 0; i < count; i++) {
+          let taskListTaskListElement = taskListElement.children[1]
+          let taskElement = createTask(null, true)
+          taskListTaskListElement.appendChild(taskElement)
+        }
+      }
 
       taskListContainer.appendChild(taskListElement)
     })
@@ -80,21 +124,26 @@ let view = {
   onclick: null
 }
 
-function createTask(object) {
+function createTask(object, isFiller) {
   // TODO: data validation needed
   let task = document.createElement('div')
   task.classList.add('task')
-  task.id = 't' + object.id
   let circle = document.createElement('div')
   circle.classList.add('task__circle')
   task.appendChild(circle)
 
-  if(object.value === true){
-    task.classList.add('task--value-true')
-  }else if(object.value === false){
-    task.classList.add('task--value-false')
-  }else if(object.value === 'none'){
-    task.classList.add('task--value-none')
+  if(isFiller){
+    task.classList.add('task--state-filler')
+  }else{
+    task.id = 't' + object.id
+
+    if(object.value === true){
+      task.classList.add('task--value-true')
+    }else if(object.value === false){
+      task.classList.add('task--value-false')
+    }else if(object.value === 'none'){
+      task.classList.add('task--value-none')
+    }
   }
 
   return task
