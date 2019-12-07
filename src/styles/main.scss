@@ -162,18 +162,18 @@ body{
     background-image: url('../images/task-icon-true.svg');
     border-color: $task--value-true-color;
   }
-  &--value-false::after{
+  &--value-true::after{
     background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
-    linear-gradient(90deg, transparent 0%, transparentize($task--value-false-color, .3) 40%, transparentize($task--value-false-color, .3) 60%, transparent 100%);
+    linear-gradient(90deg, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
   }
 
   &--value-false .task__circle{
     background-image: url('../images/task-icon-false.svg');
     border-color: $task--value-false-color;
   }
-  &--value-true::after{
+  &--value-false::after{
     background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
-    linear-gradient(90deg, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
+    linear-gradient(90deg, transparent 0%, transparentize($task--value-false-color, .3) 40%, transparentize($task--value-false-color, .3) 60%, transparent 100%);
   }
 
   &--value-none .task__circle{
