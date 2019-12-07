@@ -175,19 +175,8 @@ function createTaskList(object) {
 
 function createWeekdays(object) {
   // TODO: data validation needed
-  let mainElemnet = document.querySelector('.th')
-  let weekdays
-
-  if(document.querySelector('.th__weekdays')){
-    weekdays = document.querySelector('.th__weekdays')
-  }else{
-    weekdays = document.createElement('ul')
-    weekdays.classList.add('th__weekdays')
-  }
-
-  for (var i = 0; i < weekdays.children.length; i++) {
-    weekdays.removeChild(weekdays.children[i])
-  }
+  let weekdays = document.createElement('ul')
+  weekdays.classList.add('th__weekdays')
 
   let firstDate = Date.now()
   let lastDate = 0
@@ -211,6 +200,7 @@ function createWeekdays(object) {
 
     let text = document.createElement('span')
     text.classList.add('th__weekday-text')
+
     let day = new Date(date).getDate()
     let month = new Date(date).getMonth() + 1
     text.innerHTML = day + '/' + month
