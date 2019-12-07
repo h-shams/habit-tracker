@@ -14,8 +14,10 @@ if(localStorage.getItem('TaskList-id-list') === null){
 }
 
 view.onclick = event => {
-  console.log(event)
   taskClicked(event)
+}
+view.createTaskListBtn.onclick = event => {
+  addNewTaskList(event)
 }
 
 function core(){
@@ -109,8 +111,8 @@ function addTaskToEndTaskList(date, taskListId){
   })
 }
 
-function addNewTaskList(title, des=null){
-  let taskList = new TaskList(title, des)
+function addNewTaskList(object){
+  let taskList = new TaskList(object.title, object.des)
   let taskListsIdList = localStorage.getItem('TaskList-id-list')
   taskListsIdList = JSON.parse(taskListsIdList)
   taskListsIdList.push('TaskList-'+taskList.title)

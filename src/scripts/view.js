@@ -121,7 +121,12 @@ let view = {
   }
 },
 
-  onclick: null
+  onclick: null,
+
+  createTaskListBtn: {
+    onclick: null
+  }
+
 }
 
 function createTask(object, isFiller) {
@@ -254,5 +259,51 @@ window.addEventListener('click', (event) =>{
     view.onclick(taskObject)
   }
 })
+
+document.querySelectorAll('.form__submit-btn').forEach( btn => {
+  btn.addEventListener('click', (event) =>{
+    let input
+    if(btn.parentNode.classList.contains('form--create-tasklist')){
+      var form = btn.parentNode
+      input = form.querySelector('.input__input')
+      let title = input.value
+      input.value = ""
+
+      let object = {
+        title: title,
+        state: 'ok',
+        des: null
+      }
+
+      view.createTaskListBtn.onclick(object)
+
+      closeModale(form.parentNode)
+    }
+  })
+})
+
+document.querySelectorAll('.btn--create-task-list').forEach( btn => {
+  btn.addEventListener('click', (event) => {
+    openModale('modale--create-tasklist')
+  })
+})
+
+document.querySelectorAll('.close-btn').forEach( btn => {
+  btn.addEventListener('click', () => {
+    closeModale(btn.parentNode)
+  })
+})
+
+function closeModale(modale){
+  modale.classList.remove('modale--state-active')
+  modale.parentNode.classList.remove('modales--state-active')
+}
+
+function openModale(className){
+  let modaleContainer = document.querySelector('.modales')
+  modaleContainer.classList.add('modales--state-active')
+  let modale = document.querySelector("." + className)
+  modale.classList.add('modale--state-active')
+}
 
 export default view
