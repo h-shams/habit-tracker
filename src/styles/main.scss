@@ -2,7 +2,7 @@
 
 html{
   box-sizing: border-box;
-  height: 92vh;
+  height: 100vh;
 }
 html *, html *::after, html *::before{
   box-sizing: inherit;
@@ -11,44 +11,23 @@ html *, html *::after, html *::before{
 body{
   height: 100%;
   margin: 0;
-  padding: .5em;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .th{
   font-family: sans-serif;
-  height: 100%;
   position: relative;
+  overflow: auto;
+  padding: 3.5em 0;
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
 
-
-  &__error{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    color: #555;
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: .3s ease opacity;
-    background-color: #eee;
-    z-index: 1;
-  }
-
-  &--no-tl-error .th__error--no-tl{
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  &--special-error .th__error--special{
-    opacity: 1;
-    pointer-events: auto;
+  &__filler{
+    height: 3.5em;
+    order: 999;
+    flex: 0 0 auto;
   }
 
   &__weekdays{
@@ -62,25 +41,28 @@ body{
     justify-content: flex-start;
     align-items: center;
     color: #eee;
-    // position: relative;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
 
     &::after{
-      content: '';
-      border-radius: .25em;
+      content: "";
       background-color: #333;
-      position: fixed;
-      top: .5em;
-      right: .5em;
-      left: .5em;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
       height: 3.5em;
       z-index: -1;
     }
+
   }
 
   &__weekday{
     width: 6em;
     padding: 1em .5em;
-    flex: 1 0 auto;
+    flex: 0 0 auto;
     min-width: $task-min-width;
   }
 
@@ -220,8 +202,8 @@ body{
 
   &--left-bottom{
     position: fixed;
-    bottom: .7em;
-    left: .7em;
+    bottom: 1.5em;
+    left: .5em;
   }
 
   &--color-blue{

@@ -19,6 +19,9 @@ let view = {
       mainElemnet.appendChild(createWeekdays(taskListsArr))
     }
 
+    let ul = document.querySelector('.th__weekdays')
+    ul.style.width = `calc(100% + ${ul.parentNode.scrollLeftMax}px)`
+
     //if taskListContainer is exist, dont create it again!
     let taskListContainer
     if(document.querySelector('#taskListContainer')){
