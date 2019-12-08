@@ -296,4 +296,4 @@ function openModale(className){
   modale.classList.add('modale--state-active')
 }
 
-export default view
+module.exports = view

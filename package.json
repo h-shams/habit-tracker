@@ -4,15 +4,15 @@
   "description": "A habbit and goal tracker!",
   "main": "index.js",
   "scripts": {
-    "start": "run-p server sass watch:js copy:js",
+    "start": "run-p server sass js watch:js",
     "server": "browser-sync start --server src --serveStatic .tmp --files .tmp, \"src/**/*.html\"",
     "sass": "node-sass src/styles/main.scss .tmp/styles/main.css -w",
+    "js":"browserify --debug src/scripts/core.js -o .tmp/scripts/core.js",
     "watch:js": "onchange \"src/scripts/**/*.js\" -- npm run copy:js",
-    "copy:js": "copyfiles --up 2 --all src/scripts/**/* .tmp/scripts",
 
     "build":"run-p build:*",
     "build:css":"node-sass src/styles/main.scss dist/styles/main.css",
-    "build:js": "copyfiles --up 2 --all src/scripts/**/* dist/scripts",
+    "build:js": "browserify src/scripts/core.js -o dist/scripts/core.js",
     "build:images": "copyfiles --up 2 --all src/images/* dist/images",
     "build:html": "copyfiles --up 1 src/index.html dist/"
   },

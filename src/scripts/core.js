@@ -1,7 +1,8 @@
-import db from './database/database.js'
-import Task from './classes/Task.js'
-import TaskList from './classes/TaskList.js'
-import view from './view.js'
+
+var db = require('./database/database.js');
+var Task = require('./classes/Task.js');
+var TaskList = require('./classes/TaskList.js');
+var view = require('./view.js');
 
 if(localStorage.getItem('lastTaskId') === null){
   localStorage.setItem('lastTaskId', 10000000)

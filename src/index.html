@@ -3,11 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title>Habbit Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body>
 
     <div class="modales">
+
       <div class="modale modale--create-tasklist">
         <div class="modale__close-btn close-btn btn btn--color-blue btn--style-circle">
           <svg xmlns="http://www.w3.org/2000/svg" class="close-icon" viewBox="0 0 448 512">
@@ -25,15 +27,29 @@
 					</button>
         </form>
       </div>
+
     </div>
 
     <main class="th">
-      <div class="th__no-tl-error">
+      <div class="th__error th__error--no-tl">
         <h1>Nothing to show!</h1>
         <span>create a task list</span>
+      </div>
+      <div class="th__error th__error--special">
+        <h1>JS files are not downloaded!</h1>
       </div>
       <button class="btn btn--color-blue btn--left-bottom btn--create-task-list btn--style-rectangle">create task list</button>
     </main>
   </body>
-  <script async="" src="scripts/core.js" type="module" charset="utf-8"></script>
+  <script type="text/javascript">
+    function showError(msg){
+      let h1 = document.querySelector('.th__error--special h1')
+      let main = document.querySelector('.th')
+      h1.innerHTML = msg
+      main.classList.add('th--special-error')
+    }
+
+    if (!localStorage) showError('localStorage nist')
+  </script>
+  <script src="scripts/core.js" type="module" charset="utf-8" crossorigin="use-credentials"></script>
 </html>

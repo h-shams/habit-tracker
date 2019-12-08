@@ -14,16 +14,13 @@ body{
   padding: .5em;
 }
 
-
 .th{
   font-family: sans-serif;
   height: 100%;
   position: relative;
 
-  &--no-tl-error{
-  }
 
-  &__no-tl-error{
+  &__error{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -40,9 +37,16 @@ body{
     opacity: 0;
     pointer-events: none;
     transition: .3s ease opacity;
+    background-color: #eee;
+    z-index: 1;
   }
 
-  &--no-tl-error .th__no-tl-error{
+  &--no-tl-error .th__error--no-tl{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &--special-error .th__error--special{
     opacity: 1;
     pointer-events: auto;
   }
