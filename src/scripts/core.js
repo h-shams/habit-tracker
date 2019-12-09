@@ -22,8 +22,7 @@ view.createTaskListBtn.onclick = event => {
 }
 
 function core(){
-  console.log(':: CORE ::')
-  if(db.getAllData().length > 0){
+    if(db.getAllData().length > 0){
     db.getAllData().forEach( taskList => {
 
       let tasksArray = taskList.nodesArray
@@ -36,20 +35,15 @@ function core(){
       }else{
         console.log(taskList.title)
         lastDate = Date.parse(tasksArray[tasksArray.length-1].date)
-        console.log('lastDate: '+tasksArray[tasksArray.length-1].date)
         let msBetween = Date.now() - lastDate
         daysBetween = Math.floor(msBetween / (24*60*60*1000))
-        console.log('daysBetween: '+daysBetween)
       }
 
       while (daysBetween > 0) {
-        console.log('WHILE: '+daysBetween)
         lastDate += (24*60*60*1000)
         --daysBetween
         let date = new Date(lastDate).toISOString().split('T')[0]
-        console.log('WHILE-date: '+ date)
         addTaskToEndTaskList(date, taskList.id)
-        console.log('one day is added')
       }
     })
   }

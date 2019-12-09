@@ -20,7 +20,12 @@ let view = {
     }
 
     let ul = document.querySelector('.th__weekdays')
-    ul.style.width = `calc(100% + ${ul.parentNode.scrollLeftMax}px)`
+    let width = window.getComputedStyle(ul.parentNode)['width'].split('px')[0]
+    if(width > 500){
+      ul.style.width = `calc(100% + ${ul.parentNode.scrollLeftMax}px)`
+    }else{
+      ul.style.height = `calc(100% + 3.5em + ${ul.parentNode.scrollTopMax}px)`
+    }
 
     //if taskListContainer is exist, dont create it again!
     let taskListContainer
@@ -29,6 +34,7 @@ let view = {
     }else{
       taskListContainer = document.createElement('div')
       taskListContainer.id = 'taskListContainer'
+      taskListContainer.className = 'task-list-container'
       mainElemnet.appendChild(taskListContainer)
     }
 
@@ -45,22 +51,15 @@ let view = {
         newestDate = lastDay
       }
     })
-    console.log('oldest:' + new Date(oldestDate))
-    console.log('newest:' + new Date(newestDate))
 
     taskListsArr.forEach( taskList => {
       let length = taskList.nodesArray.length
       let taskListElement = createTaskList(taskList)
       let firstDay = Date.parse(taskList.nodesArray[0].date)
       let lastDay = Date.parse(taskList.nodesArray[length - 1].date)
-      console.log('firstDay: ' + new Date(firstDay))
-      console.log('lastDay: ' + new Date(lastDay))
-      // console.log('IF: ')
-      // console.log(firstDay > oldestDate)
 
       if(firstDay > oldestDate){
         let count = Math.floor((firstDay - oldestDate) / (24*60*60*1000))
-        console.log('firstday is less than newest day :' + count);
         for (let i = 0; i < count; i++) {
           let taskListTaskListElement = taskListElement.children[1]
           let taskElement = createTask(null, true)

@@ -1,5 +1,15 @@
 @import 'variables';
 
+@mixin mq($state){
+  @if $state = 'mobile' {
+    @media (max-width: 500px){
+      &{
+        @content
+      }
+    }
+  }
+}
+
 html{
   box-sizing: border-box;
   height: 100vh;
@@ -23,11 +33,18 @@ body{
   flex-grow: 1;
   display: flex;
   flex-flow: column nowrap;
+  @include mq('mobile'){
+    padding: 0;
+    padding-left: 3.5em;
+  }
 
   &__filler{
     height: 3.5em;
     order: 999;
     flex: 0 0 auto;
+    @include mq('mobile'){
+      // display: none;
+    }
   }
 
   &__weekdays{
@@ -43,8 +60,18 @@ body{
     color: #eee;
     position: absolute;
     top: 0;
-    right: 0;
     left: 0;
+
+    @include mq('mobile'){
+      width: 3.5em;
+      height: 100%;
+      min-height: 0;
+      min-width: 3.5em;
+      padding: .5em 0;
+      padding-top: 4em * 1.1;
+      flex-flow: column;
+      bottom: 0;
+    }
 
     &::after{
       content: "";
@@ -55,6 +82,11 @@ body{
       left: 0;
       height: 3.5em;
       z-index: -1;
+      @include mq('mobile'){
+        width: 3.5em;
+        height: 100%;
+        right: initial;
+      }
     }
 
   }
@@ -64,6 +96,15 @@ body{
     padding: 1em .5em;
     flex: 0 0 auto;
     min-width: $task-min-width;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include mq('mobile'){
+      width: 3.5em;
+      min-width: 0;
+      height: 6em;
+      min-height: $task-min-width;
+    }
   }
 
   &__weekday-text{
@@ -74,11 +115,16 @@ body{
     text-overflow: ellipsis;
   }
 
-  &__task-list-container{
-    padding: .5em;
-  }
-
 }
+
+.task-list-container{
+  display: flex;
+  flex-flow: column nowrap;
+  @include mq('mobile'){
+    flex-direction: row;
+  }
+}
+
 
 .task-list {
   display: flex;
@@ -88,6 +134,9 @@ body{
   width: 100%;
   margin: 0 auto;
   color: #444;
+  @include mq('mobile'){
+    flex-direction: column;
+  }
 
   &__title{
     font-size: 1.25em;
@@ -95,20 +144,45 @@ body{
     width: 5em;
     text-align: center;
     flex-shrink: 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    @include mq('mobile'){
+      font-size: 1.1em;
+      margin: .5em .1em;
+      width: 4em;
+      height: 3em;
+    }
   }
 
-  &__task-list{
+  &__task-list {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
     flex-grow: 1;
+    @include mq('mobile'){
+      flex-direction: column;
+    }
   }
 }
 
 .task {
   width: 6em;
-  position: relative;
   min-width: $task-min-width;
+  height: auto;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+
+  @include mq('mobile'){
+    height: 6em;
+    min-height: $task-min-width;
+    width: 3em;
+    min-width: 0;
+  }
 
   &__circle{
     width: 1.5em;
@@ -123,6 +197,10 @@ body{
     transition: .2s ease all;
   }
 
+  @include mq('mobile'){
+    flex-direction: column;
+  }
+
   &::after{
     content: "";
     display: block;
@@ -132,25 +210,40 @@ body{
     left: 0;
     top: 0;
     bottom: 0;
-    margin: auto 0;
+    margin: auto;
     background-color: $task--timeline-color;
     z-index: -1;
+
+    @include mq('mobile'){
+      width: $task--timeline-width;
+      height: auto;
+    }
+
     background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%);
   }
+
+
   &:first-child::after{
     border-radius: 50em 0 0 50em;
+    @include mq('mobile'){
+      border-radius: 50em 50em 0 0;
+    }
   }
   &:last-child::after{
     border-radius: 0 50em 50em 0;
+    @include mq('mobile'){
+      border-radius: 0 0 50em 50em;
+    }
   }
 
+  $g-dgree: 90deg;
   &--value-true .task__circle{
     background-image: url('../images/task-icon-true.svg');
     border-color: $task--value-true-color;
   }
   &--value-true::after{
-    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
-    linear-gradient(90deg, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
+    background-image: linear-gradient($g-dgree, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+    linear-gradient($g-dgree, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
   }
 
   &--value-false .task__circle{
@@ -158,16 +251,45 @@ body{
     border-color: $task--value-false-color;
   }
   &--value-false::after{
-    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
-    linear-gradient(90deg, transparent 0%, transparentize($task--value-false-color, .3) 40%, transparentize($task--value-false-color, .3) 60%, transparent 100%);
+    background-image: linear-gradient($g-dgree, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+    linear-gradient($g-dgree, transparent 0%, transparentize($task--value-false-color, .3) 40%, transparentize($task--value-false-color, .3) 60%, transparent 100%);
   }
 
   &--value-none .task__circle{
     border-color: $task--value-none-color;
   }
   &--value-none::after{
-    background-image: linear-gradient(90deg, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
-    linear-gradient(90deg, transparent 0%, transparentize($task--value-none-color, .3) 40%, transparentize($task--value-none-color, .3) 60%, transparent 100%);
+    background-image: linear-gradient($g-dgree, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+    linear-gradient($g-dgree, transparent 0%, transparentize($task--value-none-color, .3) 40%, transparentize($task--value-none-color, .3) 60%, transparent 100%);
+  }
+
+  @include mq('mobile'){
+    $g-dgree: 0deg;
+    &--value-true .task__circle{
+      background-image: url('../images/task-icon-true.svg');
+      border-color: $task--value-true-color;
+    }
+    &--value-true::after{
+      background-image: linear-gradient($g-dgree, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+      linear-gradient($g-dgree, transparent 0%, transparentize($task--value-true-color, .3) 40%, transparentize($task--value-true-color, .3) 60%, transparent 100%);
+    }
+
+    &--value-false .task__circle{
+      background-image: url('../images/task-icon-false.svg');
+      border-color: $task--value-false-color;
+    }
+    &--value-false::after{
+      background-image: linear-gradient($g-dgree, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+      linear-gradient($g-dgree, transparent 0%, transparentize($task--value-false-color, .3) 40%, transparentize($task--value-false-color, .3) 60%, transparent 100%);
+    }
+
+    &--value-none .task__circle{
+      border-color: $task--value-none-color;
+    }
+    &--value-none::after{
+      background-image: linear-gradient($g-dgree, transparent 20%, rgba(0,0,0,.4) 40%, rgba(0,0,0,.4) 60%, transparent 80%),
+      linear-gradient($g-dgree, transparent 0%, transparentize($task--value-none-color, .3) 40%, transparentize($task--value-none-color, .3) 60%, transparent 100%);
+    }
   }
 
   &--state-filler::after{
@@ -204,6 +326,7 @@ body{
     position: fixed;
     bottom: 1.5em;
     left: .5em;
+    z-index: 10000;
   }
 
   &--color-blue{
@@ -328,5 +451,4 @@ body{
   &__shape{
     fill: #fff;
   }
-
 }
