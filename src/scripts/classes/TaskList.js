@@ -1,6 +1,6 @@
-import idGen from '../modules/idGenerator.js'
+var idGen = require('../modules/idGenerator.js');
 
-export default class TaskList {
+module.exports = class TaskList {
   constructor(title, des) {
     // TODO: validating inputs
     // TODO: create "change" methode

@@ -1,6 +1,6 @@
-import idGen from '../modules/idGenerator.js'
+var idGen = require('../modules/idGenerator.js');
 
-export default class Task {
+module.exports = class Task {
   constructor(value, date, state='enable', des=null) {
     // TODO: validating inputs
     // TODO: create "change" methode

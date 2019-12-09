@@ -1,7 +1,8 @@
-import db from './database/database.js'
-import Task from './classes/Task.js'
-import TaskList from './classes/TaskList.js'
-import view from './view.js'
+
+var db = require('./database/database.js');
+var Task = require('./classes/Task.js');
+var TaskList = require('./classes/TaskList.js');
+var view = require('./view.js');
 
 if(localStorage.getItem('lastTaskId') === null){
   localStorage.setItem('lastTaskId', 10000000)
@@ -21,8 +22,7 @@ view.createTaskListBtn.onclick = event => {
 }
 
 function core(){
-  console.log(':: CORE ::')
-  if(db.getAllData().length > 0){
+    if(db.getAllData().length > 0){
     db.getAllData().forEach( taskList => {
 
       let tasksArray = taskList.nodesArray
@@ -35,20 +35,15 @@ function core(){
       }else{
         console.log(taskList.title)
         lastDate = Date.parse(tasksArray[tasksArray.length-1].date)
-        console.log('lastDate: '+tasksArray[tasksArray.length-1].date)
         let msBetween = Date.now() - lastDate
         daysBetween = Math.floor(msBetween / (24*60*60*1000))
-        console.log('daysBetween: '+daysBetween)
       }
 
       while (daysBetween > 0) {
-        console.log('WHILE: '+daysBetween)
         lastDate += (24*60*60*1000)
         --daysBetween
         let date = new Date(lastDate).toISOString().split('T')[0]
-        console.log('WHILE-date: '+ date)
         addTaskToEndTaskList(date, taskList.id)
-        console.log('one day is added')
       }
     })
   }

@@ -1,4 +1,4 @@
-export default{
+module.exports = {
   getAllData() {
     let taskListsArray = []
     let taskListIDs = JSON.parse(localStorage.getItem('TaskList-id-list'))
