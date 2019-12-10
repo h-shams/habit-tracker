@@ -33,7 +33,6 @@ function core(){
         lastDate = Date.now() - (24*60*60*1000)
         daysBetween = 1
       }else{
-        console.log(taskList.title)
         lastDate = Date.parse(tasksArray[tasksArray.length-1].date)
         let msBetween = Date.now() - lastDate
         daysBetween = Math.floor(msBetween / (24*60*60*1000))

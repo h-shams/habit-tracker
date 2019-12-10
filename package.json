@@ -7,7 +7,7 @@
     "start": "run-p server sass js watch:js",
     "server": "browser-sync start --server src --serveStatic .tmp --files .tmp, \"src/**/*.html\"",
     "sass": "node-sass src/styles/main.scss .tmp/styles/main.css -w",
-    "js":"browserify --debug src/scripts/core.js -o .tmp/scripts/core.js",
+    "js":"browserify src/scripts/core.js -o .tmp/scripts/core.js --debug",
     "watch:js": "onchange \"src/scripts/**/*.js\" -- npm run js",
 
     "build":"run-p build:*",
