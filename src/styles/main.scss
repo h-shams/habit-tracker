@@ -93,14 +93,14 @@ body{
 
   &__weekday{
     width: 6em;
-    padding: 1em .5em;
+    padding: 1em .1em;
     flex: 0 0 auto;
     min-width: $task-min-width;
     display: flex;
     justify-content: center;
     align-items: center;
     @include mq('mobile'){
-      width: 3.5em;
+      width: 100%;
       min-width: 0;
       height: 6em;
       min-height: $task-min-width;
@@ -113,6 +113,10 @@ body{
     text-align: center;
     overflow-x: hidden;
     text-overflow: ellipsis;
+    @include mq('mobile'){
+      overflow-x: initial;
+      text-overflow: initial;
+    }
   }
 
 }
@@ -389,6 +393,7 @@ body{
   font-family: sans-serif;
   opacity: 0;
   text-align: center;
+  pointer-events: none;
 
   display: flex;
   flex-flow: column nowrap;
@@ -397,6 +402,7 @@ body{
 
   &--state-active{
     opacity: 1;
+    pointer-events: auto;
     transform: translate3d(-50%, -50%, 0);
   }
 
