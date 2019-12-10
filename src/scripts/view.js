@@ -5,10 +5,10 @@ let view = {
 
     //checks if there is no task list shows an error
     if(taskListsArr.length === 0){
-      mainElemnet.classList.add('th--no-tl-error')
+      openModale('modale--no-task-list')
       return false
     }else{
-      mainElemnet.classList.remove('th--no-tl-error')
+
     }
 
     //if weekdays is exist, dont create it again!
@@ -103,7 +103,6 @@ let view = {
       let taskElements = taskListElements[i].children[1].children
       for (let j = 0; j < taskElements.length; j++) {
         let id = Number.parseInt(taskElements[j].id.slice(1))
-        // console.log(taskElements[j].id +" : "+ id)
         if(id === object.id){
           task = taskElements[j]
         }
