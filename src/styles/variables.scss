@@ -9,3 +9,10 @@ $task-min-width: 5em;
 $task--value-true-color: green;
 $task--value-false-color: #cc2727;
 $task--value-none-color: #1879e0;
+
+$z-indexs-map: (
+  modale: 1000,
+  fixed-btn: 800,
+  fixed-navbar: 600,
+  back-of-others: -1,
+);

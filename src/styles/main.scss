@@ -8,7 +8,15 @@
       }
     }
   }
-}
+};
+
+@mixin z-index($key){
+  @if map-has-key($z-indexs-map, $key)  {
+    z-index: map-get($z-indexs-map, $key);
+  }@else{
+    @error key is wrong;
+  }
+};
 
 html{
   box-sizing: border-box;
@@ -81,7 +89,7 @@ body{
       right: 0;
       left: 0;
       height: 3.5em;
-      z-index: -1;
+      @include z-index(back-of-others);
       @include mq('mobile'){
         width: 3.5em;
         height: 100%;
@@ -216,7 +224,7 @@ body{
     bottom: 0;
     margin: auto;
     background-color: $task--timeline-color;
-    z-index: -1;
+    @include z-index(back-of-others);
 
     @include mq('mobile'){
       width: $task--timeline-width;
@@ -330,7 +338,8 @@ body{
     position: fixed;
     bottom: 1.5em;
     left: .5em;
-    z-index: 10000;
+    @include z-index('fixed-btn');
+
   }
 
   &--color-blue{
@@ -362,10 +371,11 @@ body{
   left: 0;
   background-color: rgba(0,0,0,.5);
   backdrop-filter: blur(.2em);
-  z-index: 100;
+  @include z-index(modale);
   opacity: 0;
   pointer-events: none;
   transition: .2s ease all;
+  overflow-y: auto;
 
   &--state-active{
     opacity: 1;
@@ -377,16 +387,15 @@ body{
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate3d(-50%, -40%, 0);
-  max-height: 90vh;
+  transform: translate3d(-50%, -50%, 0);
   max-width: 90vw;
-  min-height: 20vh;
-  min-width: 30vw;
+  min-width: 50vw;
   padding: 4em 3em 2em;
   margin: 0 auto;
 
   transition: .4s ease all;
   color: #333;
+
   box-shadow: 0 0 .5em 0 rgba(0,0,0,.3);
   background-color: $task--background-color;
   border-radius: .6em;
@@ -398,12 +407,15 @@ body{
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: center;  
+
+  @include mq(mobile){
+    min-width: 70vw;
+  };
 
   &--state-active{
     opacity: 1;
     pointer-events: auto;
-    transform: translate3d(-50%, -50%, 0);
   }
 
   &__close-btn{
