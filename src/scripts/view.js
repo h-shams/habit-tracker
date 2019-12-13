@@ -253,11 +253,18 @@ window.addEventListener('click', (event) =>{
 
 document.querySelectorAll('.form__submit-btn').forEach( btn => {
   btn.addEventListener('click', (event) =>{
-    let input
+
     if(btn.parentNode.classList.contains('form--create-tasklist')){
       var form = btn.parentNode
-      input = form.querySelector('.input__input')
+      var input = form.querySelector('.input__input')
       let title = input.value
+
+      if(title === ""){
+        console.log(input.parentNode);
+        showError(input.parentNode, "input must not be empty")
+        return false
+      }
+
       input.value = ""
 
       let object = {
@@ -267,7 +274,6 @@ document.querySelectorAll('.form__submit-btn').forEach( btn => {
       }
 
       view.createTaskListBtn.onclick(object)
-
       closeModale(form.parentNode)
     }
   })
@@ -295,6 +301,30 @@ function openModale(className){
   modaleContainer.classList.add('modales--state-active')
   let modale = document.querySelector("." + className)
   modale.classList.add('modale--state-active')
+}
+
+function showError(input, errorMsg){
+  if(!errorMsg || typeof errorMsg !== 'string'){
+    throw new Error('errorMassage must be a valid string')
+  }
+
+  if(input.querySelector('.input__error-msg')){
+    var errorElement = input.querySelector('.input__error-msg')
+    errorElement.innerHTML = errorMsg
+    input.classList.add('input--state-error')
+  }else{
+    throw new Error('::input is not a valid "input element"')
+  }
+}
+
+function removeError(input){
+  if(input.querySelector('.input__error-msg')){
+    var errorElement = input.querySelector('.input__error-msg')
+    errorElement.innerHTML = ""
+    input.classList.remove('input--state-error')
+  }else{
+    throw new Error('input is not a valid "input element"')
+  }
 }
 
 module.exports = view
