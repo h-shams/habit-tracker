@@ -19,13 +19,7 @@ let view = {
       mainElemnet.appendChild(createWeekdays(taskListsArr))
     }
 
-    let ul = document.querySelector('.th__weekdays')
-    let width = window.getComputedStyle(ul.parentNode)['width'].split('px')[0]
-    if(width > 500){
-      ul.style.width = `calc(100% + ${ul.parentNode.scrollLeftMax}px)`
-    }else{
-      ul.style.height = `calc(100% + 3.5em + ${ul.parentNode.scrollTopMax}px)`
-    }
+    getMoreSpaceToWeekdays(document.querySelector('.th__weekdays'))
 
     //if taskListContainer is exist, dont create it again!
     let taskListContainer
@@ -251,6 +245,10 @@ window.addEventListener('click', (event) =>{
   }
 })
 
+window.addEventListener('resize', () => {
+  getMoreSpaceToWeekdays(document.querySelector('.th__weekdays'))
+});
+
 document.querySelectorAll('.form__submit-btn').forEach( btn => {
   btn.addEventListener('click', (event) =>{
 
@@ -260,7 +258,6 @@ document.querySelectorAll('.form__submit-btn').forEach( btn => {
       let title = input.value
 
       if(title === ""){
-        console.log(input.parentNode);
         showError(input.parentNode, "input must not be empty")
         return false
       }
@@ -324,6 +321,17 @@ function removeError(input){
     input.classList.remove('input--state-error')
   }else{
     throw new Error('input is not a valid "input element"')
+  }
+}
+
+function getMoreSpaceToWeekdays(ul){
+  let width = window.getComputedStyle(ul.parentNode)['width'].split('px')[0]
+  if(width > 500){
+    ul.style.width = `calc(100% + ${ul.parentNode.scrollLeftMax}px)`
+    ul.style.height = ""
+  }else{
+    ul.style.height = `calc(100% + 3.5em + ${ul.parentNode.scrollTopMax}px)`
+    ul.style.width = ""
   }
 }
 

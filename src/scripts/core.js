@@ -118,10 +118,3 @@ function addNewTaskList(object){
 
   view.reload(db.getAllData())
 }
-
-function test(){
-  view.reload(db.getAllData())
-  console.log('tested')
-}
-
-setTimeout( test , 5000)
