@@ -4,14 +4,14 @@ var Task = require('./classes/Task.js');
 var TaskList = require('./classes/TaskList.js');
 var view = require('./view.js');
 
-if(localStorage.getItem('lastTaskId') === null){
-  localStorage.setItem('lastTaskId', 10000000)
+if(db.config.lastTaskId.get() === null){
+  db.config.lastTaskId.set(10000000)
 }
-if(localStorage.getItem('lastTaskListId') === null){
-  localStorage.setItem('lastTaskListId', 10000000)
+if(db.config.lastTaskListId.get() === null){
+  db.config.lastTaskListId.set(10000000)
 }
-if(localStorage.getItem('TaskList-id-list') === null){
-  localStorage.setItem('TaskList-id-list', '[]')
+if(db.config.taskListIdList.get() === null){
+  db.config.taskListIdList.set('[]')
 }
 
 view.onclick = event => {
@@ -52,37 +52,26 @@ core()
 view.create(db.getAllData())
 
 function taskClicked(taskObject) {
-  let id = taskObject.id
-  // id = Number.parseInt(id)
 
-  let taskListsArray = []
-  let taskListIDs = JSON.parse(localStorage.getItem('TaskList-id-list'))
+  let taskId = taskObject.id
+  let task = db.getTaskById(taskId)
 
-  taskListIDs.forEach( taskList => {
+  if(task.value === true){
+    task.value = false
+    task.isChanged = true
+    task.lastChangeDate = new Date().toISOString()
+  }else if(task.value === false){
+    task.value = true
+    task.isChanged = true
+    task.lastChangeDate = new Date().toISOString()
+  }else if(task.value === 'none'){
+    task.value = true
+    task.isChanged = true
+    task.lastChangeDate = new Date().toISOString()
+  }
 
-    let taskListJson = localStorage.getItem(taskList)
-    let taskListObject = JSON.parse(taskListJson)
-    taskListObject.nodesArray.forEach( task => {
-      if(task.id === id){
-        if(task.value === true){
-          task.value = false
-          task.isChanged = true
-          task.lastChangeDate = new Date().toISOString()
-        }else if(task.value === false){
-          task.value = true
-          task.isChanged = true
-          task.lastChangeDate = new Date().toISOString()
-        }else if(task.value === 'none'){
-          task.value = true
-          task.isChanged = true
-          task.lastChangeDate = new Date().toISOString()
-        }
-        db.saveAllData(taskListObject, taskList)
-        view.reloadTask(task)
-      }
-    })
-
-  })
+  db.setTaskById(taskId, task)
+  view.reloadTask(task)
 }
 
 function addTaskToEndTaskList(date, taskListId){
@@ -107,12 +96,11 @@ function addTaskToEndTaskList(date, taskListId){
 
 function addNewTaskList(object){
   let taskList = new TaskList(object.title, object.des)
-  let taskListsIdList = localStorage.getItem('TaskList-id-list')
-  taskListsIdList = JSON.parse(taskListsIdList)
+  let taskListsIdList = db.config.taskListIdList.get()
   taskListsIdList.push('TaskList-'+taskList.title)
 
-  localStorage.setItem('TaskList-id-list', JSON.stringify(taskListsIdList))
-  localStorage.setItem('TaskList-'+taskList.title, JSON.stringify(taskList))
+  db.addTaskList('TaskList-'+taskList.title, JSON.stringify(taskList))
+  db.config.taskListIdList.set(JSON.stringify(taskListsIdList))
 
   addTaskToEndTaskList( new Date().toISOString().split('T')[0], taskList.id)
 
