@@ -1,37 +1,37 @@
-let view = {
-  create(taskListsArr){
+const view = {
+  create (taskListsArr) {
     // TODO: data validation needed
-    let mainElemnet = document.querySelector('.th')
+    const mainElemnet = document.querySelector('.th')
 
-    //checks if there is no task list shows an error
-    if(taskListsArr.length === 0){
+    // checks if there is no task list shows an error
+    if (taskListsArr.length === 0) {
       openModale('modale--no-task-list')
       return false
-    }else{
+    } else {
 
     }
 
-    //if weekdays is exist, dont create it again!
-    if(document.querySelector('.th__weekdays')){
-      let ul = document.querySelector('.th__weekdays')
+    // if weekdays is exist, dont create it again!
+    if (document.querySelector('.th__weekdays')) {
+      const ul = document.querySelector('.th__weekdays')
       ul.replaceWith(createWeekdays(taskListsArr))
-    }else{
+    } else {
       mainElemnet.appendChild(createWeekdays(taskListsArr))
     }
 
-    let ul = document.querySelector('.th__weekdays')
-    let width = window.getComputedStyle(ul.parentNode)['width'].split('px')[0]
-    if(width > 500){
+    const ul = document.querySelector('.th__weekdays')
+    const width = window.getComputedStyle(ul.parentNode).width.split('px')[0]
+    if (width > 500) {
       ul.style.width = `calc(100% + ${ul.parentNode.scrollLeftMax}px)`
-    }else{
+    } else {
       ul.style.height = `calc(100% + 3.5em + ${ul.parentNode.scrollTopMax}px)`
     }
 
-    //if taskListContainer is exist, dont create it again!
+    // if taskListContainer is exist, dont create it again!
     let taskListContainer
-    if(document.querySelector('#taskListContainer')){
+    if (document.querySelector('#taskListContainer')) {
       taskListContainer = document.querySelector('#taskListContainer')
-    }else{
+    } else {
       taskListContainer = document.createElement('div')
       taskListContainer.id = 'taskListContainer'
       taskListContainer.className = 'task-list-container'
@@ -40,44 +40,44 @@ let view = {
 
     let oldestDate = Date.now()
     let newestDate = 0
-    taskListsArr.forEach( taskList => {
-      let length = taskList.nodesArray.length
-      let firstDay = Date.parse(taskList.nodesArray[0].date)
-      let lastDay = Date.parse(taskList.nodesArray[length - 1].date)
-      if(firstDay < oldestDate){
+    taskListsArr.forEach(taskList => {
+      const length = taskList.nodesArray.length
+      const firstDay = Date.parse(taskList.nodesArray[0].date)
+      const lastDay = Date.parse(taskList.nodesArray[length - 1].date)
+      if (firstDay < oldestDate) {
         oldestDate = firstDay
       }
-      if(lastDay > newestDate){
+      if (lastDay > newestDate) {
         newestDate = lastDay
       }
     })
 
-    taskListsArr.forEach( taskList => {
-      let length = taskList.nodesArray.length
-      let taskListElement = createTaskList(taskList)
-      let firstDay = Date.parse(taskList.nodesArray[0].date)
-      let lastDay = Date.parse(taskList.nodesArray[length - 1].date)
+    taskListsArr.forEach(taskList => {
+      const length = taskList.nodesArray.length
+      const taskListElement = createTaskList(taskList)
+      const firstDay = Date.parse(taskList.nodesArray[0].date)
+      const lastDay = Date.parse(taskList.nodesArray[length - 1].date)
 
-      if(firstDay > oldestDate){
-        let count = Math.floor((firstDay - oldestDate) / (24*60*60*1000))
+      if (firstDay > oldestDate) {
+        const count = Math.floor((firstDay - oldestDate) / (24 * 60 * 60 * 1000))
         for (let i = 0; i < count; i++) {
-          let taskListTaskListElement = taskListElement.children[1]
-          let taskElement = createTask(null, true)
+          const taskListTaskListElement = taskListElement.children[1]
+          const taskElement = createTask(null, true)
           taskListTaskListElement.appendChild(taskElement)
         }
       }
 
-      taskList.nodesArray.forEach( task => {
-        let taskListTaskListElement = taskListElement.children[1]
-        let taskElement = createTask(task)
+      taskList.nodesArray.forEach(task => {
+        const taskListTaskListElement = taskListElement.children[1]
+        const taskElement = createTask(task)
         taskListTaskListElement.appendChild(taskElement)
       })
 
-      if(newestDate > lastDay){
-        let count = Math.floor((newestDate - lastDay) / (24*60*60*1000))
+      if (newestDate > lastDay) {
+        const count = Math.floor((newestDate - lastDay) / (24 * 60 * 60 * 1000))
         for (let i = 0; i < count; i++) {
-          let taskListTaskListElement = taskListElement.children[1]
-          let taskElement = createTask(null, true)
+          const taskListTaskListElement = taskListElement.children[1]
+          const taskElement = createTask(null, true)
           taskListTaskListElement.appendChild(taskElement)
         }
       }
@@ -87,40 +87,40 @@ let view = {
     console.log('view created')
   },
 
-  reload(taskListsArr) {
-    if(document.getElementById('taskListContainer')){
+  reload (taskListsArr) {
+    if (document.getElementById('taskListContainer')) {
       document.getElementById('taskListContainer').innerHTML = ''
     }
     this.create(taskListsArr)
     console.log('view reloaded')
   },
 
-  reloadTask(object) {
-    let taskListElements = document.getElementById('taskListContainer').children
+  reloadTask (object) {
+    const taskListElements = document.getElementById('taskListContainer').children
     var task = null
 
     for (let i = 0; i < taskListElements.length; i++) {
-      let taskElements = taskListElements[i].children[1].children
+      const taskElements = taskListElements[i].children[1].children
       for (let j = 0; j < taskElements.length; j++) {
-        let id = Number.parseInt(taskElements[j].id.slice(1))
-        if(id === object.id){
+        const id = Number.parseInt(taskElements[j].id.slice(1))
+        if (id === object.id) {
           task = taskElements[j]
         }
       }
     }
 
-  task.classList.remove('task--value-true')
-  task.classList.remove('task--value-false')
-  task.classList.remove('task--value-none')
+    task.classList.remove('task--value-true')
+    task.classList.remove('task--value-false')
+    task.classList.remove('task--value-none')
 
-  if(object.value === true){
-    task.classList.add('task--value-true')
-  }else if(object.value === false){
-    task.classList.add('task--value-false')
-  }else if(object.value === 'none'){
-    task.classList.add('task--value-none')
-  }
-},
+    if (object.value === true) {
+      task.classList.add('task--value-true')
+    } else if (object.value === false) {
+      task.classList.add('task--value-false')
+    } else if (object.value === 'none') {
+      task.classList.add('task--value-none')
+    }
+  },
 
   onclick: null,
 
@@ -130,24 +130,24 @@ let view = {
 
 }
 
-function createTask(object, isFiller) {
+function createTask (object, isFiller) {
   // TODO: data validation needed
-  let task = document.createElement('div')
+  const task = document.createElement('div')
   task.classList.add('task')
-  let circle = document.createElement('div')
+  const circle = document.createElement('div')
   circle.classList.add('task__circle')
   task.appendChild(circle)
 
-  if(isFiller){
+  if (isFiller) {
     task.classList.add('task--state-filler')
-  }else{
+  } else {
     task.id = 't' + object.id
 
-    if(object.value === true){
+    if (object.value === true) {
       task.classList.add('task--value-true')
-    }else if(object.value === false){
+    } else if (object.value === false) {
       task.classList.add('task--value-false')
-    }else if(object.value === 'none'){
+    } else if (object.value === 'none') {
       task.classList.add('task--value-none')
     }
   }
@@ -155,17 +155,17 @@ function createTask(object, isFiller) {
   return task
 }
 
-function createTaskList(object) {
+function createTaskList (object) {
   // TODO: data validation needed
-  let taskList = document.createElement('div')
+  const taskList = document.createElement('div')
   taskList.classList.add('task-list')
   taskList.id = 'tl' + object.id
 
-  let title = document.createElement('h3')
+  const title = document.createElement('h3')
   title.classList.add('task-list__title')
   title.innerHTML = object.title
 
-  let taskListTaskContainer = document.createElement('div')
+  const taskListTaskContainer = document.createElement('div')
   taskListTaskContainer.classList.add('task-list__task-list')
 
   taskList.appendChild(title)
@@ -174,39 +174,39 @@ function createTaskList(object) {
   return taskList
 }
 
-function createWeekdays(object) {
+function createWeekdays (object) {
   // TODO: data validation needed
-  let weekdays = document.createElement('ul')
+  const weekdays = document.createElement('ul')
   weekdays.classList.add('th__weekdays')
 
   let firstDate = Date.now()
   let lastDate = 0
-  object.forEach( taskList => {
-    let length = taskList.nodesArray.length
-    let firstDay = Date.parse(taskList.nodesArray[0].date)
-    let lastDay = Date.parse(taskList.nodesArray[length - 1].date)
-    if(firstDay < firstDate){
+  object.forEach(taskList => {
+    const length = taskList.nodesArray.length
+    const firstDay = Date.parse(taskList.nodesArray[0].date)
+    const lastDay = Date.parse(taskList.nodesArray[length - 1].date)
+    if (firstDay < firstDate) {
       firstDate = firstDay
     }
-    if(lastDay > lastDate){
+    if (lastDay > lastDate) {
       lastDate = lastDay
     }
   })
 
-  let count = Math.floor((lastDate - firstDate) / (24*60*60*1000))
+  const count = Math.floor((lastDate - firstDate) / (24 * 60 * 60 * 1000))
   let date = firstDate
   for (let i = 0; i < count + 1; i++) {
-    let weekday = document.createElement('li')
+    const weekday = document.createElement('li')
     weekday.classList.add('th__weekday')
 
-    let text = document.createElement('span')
+    const text = document.createElement('span')
     text.classList.add('th__weekday-text')
 
-    let day = new Date(date).getDate()
-    let month = new Date(date).getMonth() + 1
+    const day = new Date(date).getDate()
+    const month = new Date(date).getMonth() + 1
     text.innerHTML = day + '/' + month
 
-    date += 24*60*60*1000
+    date += 24 * 60 * 60 * 1000
 
     weekday.appendChild(text)
     weekdays.appendChild(weekday)
@@ -215,52 +215,52 @@ function createWeekdays(object) {
   return weekdays
 }
 
-function clickHandler(event) {
+function clickHandler (event) {
   let taskElement
-  if(event.target.classList.contains('task__circle')){
+  if (event.target.classList.contains('task__circle')) {
     taskElement = event.target.parentElement
-  }else{
+  } else {
     return null
   }
 
-  let taskObject = {
-    id: Number.parseInt(taskElement.id.slice(1)),
+  const taskObject = {
+    id: Number.parseInt(taskElement.id.slice(1))
   }
 
-  if(taskElement.classList.contains('task--value-true')){
+  if (taskElement.classList.contains('task--value-true')) {
     taskObject.value = true
-  }else if(taskElement.classList.contains('task--value-false')){
+  } else if (taskElement.classList.contains('task--value-false')) {
     taskObject.value = false
-  }else if(taskElement.classList.contains('task--value-none')){
+  } else if (taskElement.classList.contains('task--value-none')) {
     taskObject.value = 'none'
   }
 
-  if(taskElement.classList.contains('task--state-enable')){
+  if (taskElement.classList.contains('task--state-enable')) {
     taskObject.state = 'enable'
-  }else if(taskElement.classList.contains('task--state-disable')){
+  } else if (taskElement.classList.contains('task--state-disable')) {
     taskObject.state = 'disable'
   }
 
   return taskObject
 }
 
-window.addEventListener('click', (event) =>{
-  let taskObject = clickHandler(event)
-  if(taskObject){
+window.addEventListener('click', (event) => {
+  const taskObject = clickHandler(event)
+  if (taskObject) {
     view.onclick(taskObject)
   }
 })
 
-document.querySelectorAll('.form__submit-btn').forEach( btn => {
-  btn.addEventListener('click', (event) =>{
+document.querySelectorAll('.form__submit-btn').forEach(btn => {
+  btn.addEventListener('click', (event) => {
     let input
-    if(btn.parentNode.classList.contains('form--create-tasklist')){
+    if (btn.parentNode.classList.contains('form--create-tasklist')) {
       var form = btn.parentNode
       input = form.querySelector('.input__input')
-      let title = input.value
-      input.value = ""
+      const title = input.value
+      input.value = ''
 
-      let object = {
+      const object = {
         title: title,
         state: 'ok',
         des: null
@@ -273,28 +273,28 @@ document.querySelectorAll('.form__submit-btn').forEach( btn => {
   })
 })
 
-document.querySelectorAll('.btn--create-task-list').forEach( btn => {
+document.querySelectorAll('.btn--create-task-list').forEach(btn => {
   btn.addEventListener('click', (event) => {
     openModale('modale--create-tasklist')
   })
 })
 
-document.querySelectorAll('.close-btn').forEach( btn => {
+document.querySelectorAll('.close-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     closeModale(btn.parentNode)
   })
 })
 
-function closeModale(modale){
+function closeModale (modale) {
   modale.classList.remove('modale--state-active')
   modale.parentNode.classList.remove('modales--state-active')
 }
 
-function openModale(className){
-  let modaleContainer = document.querySelector('.modales')
+function openModale (className) {
+  const modaleContainer = document.querySelector('.modales')
   modaleContainer.classList.add('modales--state-active')
-  let modale = document.querySelector("." + className)
+  const modale = document.querySelector('.' + className)
   modale.classList.add('modale--state-active')
 }
 
-module.exports = view
+export default view

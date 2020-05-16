@@ -1,15 +1,14 @@
-module.exports = function idGenerator (type){
+export default function idGenerator (type) {
   let lastId, lastIdKey
   // TODO: must have validator
   switch (type) {
-
     case 'Task':
       lastIdKey = 'lastTaskId'
-      break;
+      break
 
     case 'TaskList':
       lastIdKey = 'lastTaskListId'
-      break;
+      break
 
     default:
       return null
@@ -17,7 +16,7 @@ module.exports = function idGenerator (type){
 
   lastId = localStorage.getItem(lastIdKey)
   lastId = Number.parseInt(lastId) + 1
-  localStorage.setItem(lastIdKey, lastId )
+  localStorage.setItem(lastIdKey, lastId)
 
   return lastId
 }

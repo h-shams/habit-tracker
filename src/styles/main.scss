@@ -1,5 +1,6 @@
 @import 'variables';
 
+
 @mixin mq($state){
   @if $state = 'mobile' {
     @media (max-width: 500px){
