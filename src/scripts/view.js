@@ -247,22 +247,21 @@ window.addEventListener('click', (event) => {
 
 window.addEventListener('resize', () => {
   getMoreSpaceToWeekdays(document.querySelector('.th__weekdays'))
-});
+})
 
-document.querySelectorAll('.form__submit-btn').forEach( btn => {
-  btn.addEventListener('click', (event) =>{
-
-    if(btn.parentNode.classList.contains('form--create-tasklist')){
+document.querySelectorAll('.form__submit-btn').forEach(btn => {
+  btn.addEventListener('click', (event) => {
+    if (btn.parentNode.classList.contains('form--create-tasklist')) {
       var form = btn.parentNode
       var input = form.querySelector('.input__input')
-      let title = input.value
+      const title = input.value
 
-      if(title === ""){
-        showError(input.parentNode, "input must not be empty")
+      if (title === '') {
+        showError(input.parentNode, 'input must not be empty')
         return false
       }
 
-      input.value = ""
+      input.value = ''
 
       const object = {
         title: title,
@@ -300,38 +299,28 @@ function openModale (className) {
   modale.classList.add('modale--state-active')
 }
 
-function showError(input, errorMsg){
-  if(!errorMsg || typeof errorMsg !== 'string'){
+function showError (input, errorMsg) {
+  if (!errorMsg || typeof errorMsg !== 'string') {
     throw new Error('errorMassage must be a valid string')
   }
 
-  if(input.querySelector('.input__error-msg')){
+  if (input.querySelector('.input__error-msg')) {
     var errorElement = input.querySelector('.input__error-msg')
     errorElement.innerHTML = errorMsg
     input.classList.add('input--state-error')
-  }else{
+  } else {
     throw new Error('::input is not a valid "input element"')
   }
 }
 
-function removeError(input){
-  if(input.querySelector('.input__error-msg')){
-    var errorElement = input.querySelector('.input__error-msg')
-    errorElement.innerHTML = ""
-    input.classList.remove('input--state-error')
-  }else{
-    throw new Error('input is not a valid "input element"')
-  }
-}
-
-function getMoreSpaceToWeekdays(ul){
-  let width = window.getComputedStyle(ul.parentNode)['width'].split('px')[0]
-  if(width > 500){
+function getMoreSpaceToWeekdays (ul) {
+  const width = window.getComputedStyle(ul.parentNode).width.split('px')[0]
+  if (width > 500) {
     ul.style.width = `calc(100% + ${ul.parentNode.scrollLeftMax}px)`
-    ul.style.height = ""
-  }else{
+    ul.style.height = ''
+  } else {
     ul.style.height = `calc(100% + 3.5em + ${ul.parentNode.scrollTopMax}px)`
-    ul.style.width = ""
+    ul.style.width = ''
   }
 }
 
