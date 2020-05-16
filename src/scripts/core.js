@@ -3,6 +3,7 @@ var db = require('./database/database.js');
 var Task = require('./classes/Task.js');
 var TaskList = require('./classes/TaskList.js');
 var view = require('./view.js');
+import '../styles/main.scss'
 
 if(db.config.lastTaskId.get() === null){
   db.config.lastTaskId.set(10000000)
