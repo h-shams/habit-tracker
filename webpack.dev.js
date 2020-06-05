@@ -20,6 +20,8 @@ module.exports = {
 	devServer: {
 		contentBase: './dist',
 		compress: true,
+		port: 4200,
+		writeToDisk: true,
 	},
 
 	plugins: [
