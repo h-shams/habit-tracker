@@ -14,6 +14,18 @@ if (db.config.taskListIdList.get() === null) {
   db.config.taskListIdList.set('[]')
 }
 
+// service worker registration
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register('./sw.bundle.js').then(() => {
+    console.log('sw registred')
+  }).catch(err => {
+    console.log('Error while registreing sw')
+    console.log(err)
+  })
+} else {
+  console.log('sw is not avaialbe')
+}
+
 view.onclick = event => {
   taskClicked(event)
 }

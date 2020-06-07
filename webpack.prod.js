@@ -7,7 +7,8 @@ module.exports = {
 	mode: 'production',
 
   entry: {
-    main: './src/scripts/core.js'
+    main: './src/scripts/core.js',
+		sw: './src/scripts/sw/sw.js',
 	},
 
   output: {

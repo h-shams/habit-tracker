@@ -9,7 +9,8 @@ module.exports = {
 	mode: 'development',
 
   entry: {
-    main: './src/scripts/core.js'
+    main: './src/scripts/core.js',
+    sw: './src/scripts/sw/sw.js',
 	},
 
   output: {
@@ -37,7 +38,8 @@ module.exports = {
 		new webpackPwaManifest(manifest),
 
 		new HtmlWebpackPlugin({
-			template: 'src/index.html'
+			template: 'src/index.html',
+			excludeChunks: ['sw'],
 		})
 	],
 
