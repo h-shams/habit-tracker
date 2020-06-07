@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpackPwaManifest = require('webpack-pwa-manifest');
 const manifest = require('./manifest.json.js');
+const {InjectManifest} = require('workbox-webpack-plugin')
 
 module.exports = {
 	mode: 'development',
@@ -40,6 +41,14 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: 'src/index.html',
 			excludeChunks: ['sw'],
+		}),
+
+		new InjectManifest({
+			swSrc: './src/scripts/sw/assets.json',
+			compileSrc: false,
+			swDest: 'assets.json',
+			// exclude: ['sw.bundle.js']
+			excludeChunks: ['sw']
 		})
 	],
 
