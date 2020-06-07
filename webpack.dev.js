@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpackPwaManifest = require('webpack-pwa-manifest');
+const manifest = require('./manifest.json.js');
 
 module.exports = {
 	mode: 'development',
@@ -31,6 +33,8 @@ module.exports = {
 			filename: '[name].css',
 			chunkFilename: '[id].css',
 		}),
+
+		new webpackPwaManifest(manifest),
 
 		new HtmlWebpackPlugin({
 			template: 'src/index.html'

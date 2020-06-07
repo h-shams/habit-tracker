@@ -8,7 +8,6 @@
     "build": "webpack --config webpack.prod.js",
     "build-dev": "webpack --config webpack.dev.js",
     "server": "browser-sync start -s ./dist --port 5320"
-
   },
   "author": "Heydar Shams",
   "license": "ISC",
@@ -35,6 +34,7 @@
     "sass-loader": "^8.0.2",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-pwa-manifest": "^4.2.0"
   }
 }
