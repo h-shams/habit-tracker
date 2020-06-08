@@ -1,5 +1,8 @@
+const ENV = __ENV__
+
 self.addEventListener('install', event => {
   console.log('SW: installed')
+  console.log(`SW: base url is "${ENV.baseUrl}"`)
 })
 
 self.addEventListener('activate', event => {

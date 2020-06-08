@@ -5,112 +5,150 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpackPwaManifest = require('webpack-pwa-manifest');
 const manifest = require('./manifest.json.js');
 const {InjectManifest} = require('workbox-webpack-plugin')
+const webpack = require('webpack');
 
-module.exports = {
-	mode: 'development',
+module.exports = (env) => {
+	const envVariables = setEnvVariables(env)
 
-  entry: {
-    main: './src/scripts/core.js',
-    sw: './src/scripts/sw/sw.js',
-	},
+	return {
+		mode: 'development',
 
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
+	  entry: {
+	    main: './src/scripts/core.js',
+	    sw: './src/scripts/sw/sw.js',
+		},
 
-	devtool: 'inline-cheap-module-source-map',
+	  output: {
+	    filename: '[name].bundle.js',
+	    path: path.resolve(__dirname, 'dist'),
+	  },
 
-	devServer: {
-		contentBase: './dist',
-		compress: true,
-		port: 4200,
-		writeToDisk: true,
-	},
+		devtool: 'inline-cheap-module-source-map',
 
-	plugins: [
-		new CleanWebpackPlugin(),
+		devServer: {
+			contentBase: './dist',
+			compress: true,
+			port: 4200,
+			writeToDisk: true,
+		},
 
-		new MiniCssExtractPlugin({
-			filename: '[name].css',
-			chunkFilename: '[id].css',
-		}),
+		plugins: [
+			new CleanWebpackPlugin(),
 
-		new webpackPwaManifest(manifest),
+			new webpack.DefinePlugin({
+				'__ENV__': JSON.stringify(envVariables)
+			}),
 
-		new HtmlWebpackPlugin({
-			template: 'src/index.html',
-			excludeChunks: ['sw'],
-		}),
+			new MiniCssExtractPlugin({
+				filename: '[name].css',
+				chunkFilename: '[id].css',
+			}),
 
-		new InjectManifest({
-			swSrc: './src/scripts/sw/assets.json',
-			compileSrc: false,
-			swDest: 'assets.json',
-			// exclude: ['sw.bundle.js']
-			excludeChunks: ['sw']
-		})
-	],
+			new webpackPwaManifest(manifest),
 
-	module: {
-		rules: [
+			new HtmlWebpackPlugin({
+				template: 'src/index.html',
+				excludeChunks: ['sw'],
+			}),
 
-			// js files
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'eslint-loader',
-					options: {
-						fix: true,
+			new InjectManifest({
+				swSrc: './src/scripts/sw/assets.json',
+				compileSrc: false,
+				swDest: 'assets.json',
+				// exclude: ['sw.bundle.js']
+				excludeChunks: ['sw']
+			}),
+
+		],
+
+		module: {
+			rules: [
+
+				// js files
+				{
+					test: /\.js$/,
+					exclude: /node_modules/,
+					use: {
+						loader: 'eslint-loader',
+						options: {
+							fix: true,
+						},
 					},
 				},
-			},
 
-			// sass files
-			{
-				test: /\.s[ac]ss$/,
-				use: [
-					MiniCssExtractPlugin.loader,
-					{
-						loader: 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-					},
-					{
-						loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
-					},
-					// 'sass-loader'
-				],
-			},
+				// sass files
+				{
+					test: /\.s[ac]ss$/,
+					use: [
+						MiniCssExtractPlugin.loader,
+						{
+							loader: 'css-loader',
+	            options: {
+	              sourceMap: true,
+	            },
+						},
+						{
+							loader: 'sass-loader',
+	            options: {
+	              sourceMap: true,
+	            },
+						},
+						// 'sass-loader'
+					],
+				},
 
-			//fonts
-			{
-				test: /\.ttf$/,
-				use: [
-					'file-loader'
-				],
-			},
+				//fonts
+				{
+					test: /\.ttf$/,
+					use: [
+						'file-loader'
+					],
+				},
 
-			// svg files
-			{
-				test: /\.svg$/,
-				use: [
-					'file-loader'
-				],
-			},
+				// svg files
+				{
+					test: /\.svg$/,
+					use: [
+						'file-loader'
+					],
+				},
 
-			// html files
-			{
-				test: /\.html$/,
-				use: [
-					'html-loader'
-				],
-			},
-		],
-	},
+				// html files
+				{
+					test: /\.html$/,
+					use: [
+						'html-loader'
+					],
+				},
+			],
+		},
+	}
+}
+
+function setEnvVariables(env) {
+	let baseUrl, isDev
+	if(env){
+		switch (env.mode) {
+			case 'dev':
+				baseUrl = 'http://localhost:4200/'
+				isDev = true
+			break;
+			case 'localProd':
+				baseUrl = 'http://localhost:5320/'
+				isDev = false
+			break;
+			default:
+				baseUrl = 'https://h-shams.github.io/habit-tracker/'
+				isDev = false
+		}
+	}else{
+		baseUrl = 'https://h-shams.github.io/habit-tracker/'
+		isDev = false
+	}
+
+	return{
+		baseUrl: baseUrl,
+		isDevMode: isDev
+	}
+
 }
