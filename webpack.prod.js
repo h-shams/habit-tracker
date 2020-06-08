@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const manifest = require('./manifest.json.js');
+const {InjectManifest} = require('workbox-webpack-plugin');
+const webpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = env => {
 	const envVariables = setEnvVariables(env)
@@ -34,9 +37,19 @@ module.exports = env => {
 				chunkFilename: '[id].css',
 			}),
 
+			new webpackPwaManifest(manifest),
+
 			new HtmlWebpackPlugin({
 				template: 'src/index.html',
-			})
+			}),
+
+			new InjectManifest({
+				swSrc: './src/scripts/sw/assets.json',
+				compileSrc: false,
+				swDest: 'assets.json',
+				// exclude: ['sw.bundle.js']
+				excludeChunks: ['sw']
+			}),
 		],
 
 		module: {
