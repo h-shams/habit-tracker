@@ -12,3 +12,8 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   console.log('SW: fetch for: ' + event.request.url)
 })
+
+function urlSlicer (url) {
+  const baseUrlLength = ENV.baseUrl.length
+  return url.slice(baseUrlLength)
+}
