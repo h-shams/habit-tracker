@@ -1,4 +1,5 @@
 const ENV = __ENV__
+const CACHE_NAME = 'habit-tracker-cache'
 
 self.addEventListener('install', event => {
   console.log('SW: installed')
@@ -12,6 +13,46 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   console.log('SW: fetch for: ' + event.request.url)
 })
+
+function cacheNewFiles (cacheAssets = false) {
+  return caches.open(CACHE_NAME).then(cache => {
+    return fetch(ENV.baseUrl + 'assets.json').then(response => {
+      return response.json().then(assets => {
+        return cache.match('assets.json').then(res => {
+          return res.json().then(oldAssets => {
+            return inAssetsButCache(assets, oldAssets).then(comparison => {
+              console.log('SW: assets')
+              console.log(assets)
+              console.log('SW: oldAssets')
+              console.log(oldAssets)
+              console.log('SW: comp')
+              console.log(comparison)
+              return cache.addAll(comparison).then(() => {
+                if (cacheAssets) {
+                  cache.add('assets.json').then(() => {
+                    console.log('SW: cached assets.json')
+                  })
+                }
+                console.log('SW: folowing items are cached')
+                console.log(comparison)
+              })
+            })
+          })
+        }).catch(err => {
+          console.log(err)
+          cache.add('assets.json').then(() => {
+            console.log('SW: cached assets.json')
+          })
+          assets.forEach(assetsEntry => {
+            cache.add(assetsEntry.url).then(() => {
+              console.log('SW: cached ' + assetsEntry.url)
+            })
+          })
+        })
+      })
+    })
+  })
+}
 
 function inCacheButAssets (assetsList, cacheList) {
   return new Promise((resolve, reject) => {
