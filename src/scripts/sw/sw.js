@@ -14,6 +14,37 @@ self.addEventListener('fetch', event => {
   console.log('SW: fetch for: ' + event.request.url)
 })
 
+function deleteOldCaches () {
+  // NOTE: this function uses "assets.json" that cached instead of fetching new
+  // "assets.json" because fetching the new "assets.json" may cause some caches
+  // delete when they are in use
+  return new Promise((resolve, reject) => {
+    let a = []
+    caches.open(CACHE_NAME).then(cache => {
+      cache.keys().then(keys => {
+        cache.match('assets.json').then(res => {
+          res.json().then(assets => {
+            // to prevent deleting "assets.json"
+            assets.push({ url: 'assets.json' })
+            inCacheButAssets(assets, keys).then(comparison => {
+              comparison.forEach(oldCache => {
+                cache.delete(oldCache)
+              })
+              a = comparison
+              console.log('SW: folowing item Deleted ')
+              console.log(comparison)
+            })
+          })
+        }).catch(err => {
+          console.log(err)
+          console.log('SW: there is no "assets.json" in cache;')
+        })
+      })
+    })
+    resolve(a)
+  })
+}
+
 function cacheNewFiles (cacheAssets = false) {
   return caches.open(CACHE_NAME).then(cache => {
     return fetch(ENV.baseUrl + 'assets.json').then(response => {
