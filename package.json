@@ -8,13 +8,12 @@
     "build": "webpack --config webpack.prod.js --env.mode=prod",
     "localBuild": "webpack --config webpack.prod.js --env.mode=localProd",
     "build-dev": "webpack --config webpack.dev.js --env.mode=dev",
-    "server": "browser-sync start -s ./dist --port 5320"
+    "server": "http-server ./dist --port 5320"
   },
   "author": "Heydar Shams",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^9.8.0",
-    "browser-sync": "^2.26.7",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.5.3",
     "cssnano": "^4.1.10",
@@ -29,6 +28,7 @@
     "group-css-media-queries-loader": "^3.0.2",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "http-server": "^0.12.3",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
