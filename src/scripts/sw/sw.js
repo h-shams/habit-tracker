@@ -34,6 +34,15 @@ self.addEventListener('fetch', event => {
     })
   )
 
+  if (urlSlicer(url) === 'index.html') {
+    const a = setTimeout(() => {
+      deleteOldCaches()
+    }, 2500)
+
+    const b = setTimeout(() => {
+      cacheNewFiles(true)
+    }, 5000)
+  }
 })
 
 function deleteOldCaches () {
@@ -74,12 +83,6 @@ function cacheNewFiles (cacheAssets = false) {
         return cache.match('assets.json').then(res => {
           return res.json().then(oldAssets => {
             return inAssetsButCache(assets, oldAssets).then(comparison => {
-              console.log('SW: assets')
-              console.log(assets)
-              console.log('SW: oldAssets')
-              console.log(oldAssets)
-              console.log('SW: comp')
-              console.log(comparison)
               return cache.addAll(comparison).then(() => {
                 if (cacheAssets) {
                   cache.add('assets.json').then(() => {
@@ -93,13 +96,13 @@ function cacheNewFiles (cacheAssets = false) {
           })
         }).catch(err => {
           console.log(err)
-          cache.add('assets.json').then(() => {
-            console.log('SW: cached assets.json')
-          })
           assets.forEach(assetsEntry => {
             cache.add(assetsEntry.url).then(() => {
               console.log('SW: cached ' + assetsEntry.url)
             })
+          })
+          cache.add('assets.json').then(() => {
+            console.log('SW: cached assets.json')
           })
         })
       })
@@ -117,13 +120,11 @@ function inCacheButAssets (assetsList, cacheList) {
     cacheList.forEach(cacheEntry => {
       let isFound = null
       assetsList.forEach(assetsEntry => {
-        if (cacheEntry.url === assetsEntry.url) {
         if (urlSlicer(cacheEntry.url) === assetsEntry.url) {
           isFound = true
         }
       })
       if (isFound === null) {
-        arr.push(cacheEntry.url)
         arr.push(urlSlicer(cacheEntry.url))
       }
     })
