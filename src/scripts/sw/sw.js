@@ -4,6 +4,7 @@ const CACHE_NAME = 'habit-tracker-cache'
 self.addEventListener('install', event => {
   console.log('SW: installed')
   console.log(`SW: base url is "${ENV.baseUrl}"`)
+  event.waitUntil(cacheNewFiles(true))
 })
 
 self.addEventListener('activate', event => {
@@ -12,6 +13,27 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   console.log('SW: fetch for: ' + event.request.url)
+
+  let url
+  // checks if root ("/") is requested
+  if (urlSlicer(event.request.url) === '') {
+    console.log(' ')
+    url = ENV.baseUrl + 'index.html'
+  } else {
+    url = event.request.url
+  }
+
+  event.respondWith(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(url).then(response => {
+        console.log(
+          'SW: GET ' + urlSlicer(url), response ? '--- cache' : '--- fetched'
+        )
+        return response || fetch(url)
+      })
+    })
+  )
+
 })
 
 function deleteOldCaches () {
