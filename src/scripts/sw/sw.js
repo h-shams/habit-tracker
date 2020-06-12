@@ -35,11 +35,11 @@ self.addEventListener('fetch', event => {
   )
 
   if (urlSlicer(url) === 'index.html') {
-    const a = setTimeout(() => {
+    setTimeout(() => {
       deleteOldCaches()
     }, 2500)
 
-    const b = setTimeout(() => {
+    setTimeout(() => {
       cacheNewFiles(true)
     }, 5000)
   }

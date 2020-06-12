@@ -115,19 +115,19 @@ function setEnvVariables(env) {
 	if(env){
 		switch (env.mode) {
 			case 'dev':
-				baseUrl = 'localhost:4200'
+				baseUrl = 'http://localhost:4200/'
 				isDev = true
 			break;
 			case 'localProd':
-				baseUrl = 'localhost:5320'
+				baseUrl = 'http://localhost:5320/'
 				isDev = false
 			break;
 			default:
-				baseUrl = 'github'
+				baseUrl = 'https://h-shams.github.io/habit-tracker/'
 				isDev = false
 		}
 	}else{
-		baseUrl = 'github'
+		baseUrl = 'https://h-shams.github.io/habit-tracker/'
 		isDev = false
 	}
 
