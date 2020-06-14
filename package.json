@@ -8,7 +8,7 @@
     "build": "webpack --config webpack.prod.js --env.mode=prod",
     "localBuild": "webpack --config webpack.prod.js --env.mode=localProd",
     "build-dev": "webpack --config webpack.dev.js --env.mode=dev",
-    "server": "http-server ./dist --port 5320"
+    "server": "http-server ./dist --port 5320 -c-1"
   },
   "author": "Heydar Shams",
   "license": "ISC",
