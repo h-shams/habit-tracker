@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const manifest = require('./manifest.json.js');
 const {InjectManifest} = require('workbox-webpack-plugin');
 const webpackPwaManifest = require('webpack-pwa-manifest');
+const faviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = env => {
 	const envVariables = setEnvVariables(env)
@@ -41,6 +42,26 @@ module.exports = env => {
 
 			new HtmlWebpackPlugin({
 				template: 'src/index.html',
+			}),
+
+			new faviconsWebpackPlugin({
+				logo: './src/icons/icon_maskable512.png',
+				cache: true,
+				outputPath: 'icons',
+				prefix: 'icons/',
+		    favicons: {
+		      appName: 'Habit Tracker',
+		      appDescription: 'An opne-source habit and goal tracker',
+		      icons: {
+						android: false,
+						firefox: false,
+						appleStartup: false,
+						windows: false,
+						appleIcon: false,
+		        coast: false,
+		        yandex: false
+		      }
+		    }
 			}),
 
 			new InjectManifest({

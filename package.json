@@ -24,6 +24,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "favicons-webpack-plugin": "^3.0.1",
     "file-loader": "^6.0.0",
     "group-css-media-queries-loader": "^3.0.2",
     "html-loader": "^1.1.0",
