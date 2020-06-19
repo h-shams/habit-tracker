@@ -4,17 +4,16 @@
   "description": "A habbit and goal tracker!",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "build-dev": "webpack --config webpack.dev.js",
-    "server": "browser-sync start -s ./dist --port 5320"
-
+    "start": "webpack-dev-server --config webpack.dev.js --env.mode=dev",
+    "build": "webpack --config webpack.prod.js --env.mode=prod",
+    "localBuild": "webpack --config webpack.prod.js --env.mode=localProd",
+    "build-dev": "webpack --config webpack.dev.js --env.mode=dev",
+    "server": "http-server ./dist --port 5320 -c-1"
   },
   "author": "Heydar Shams",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^9.8.0",
-    "browser-sync": "^2.26.7",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.5.3",
     "cssnano": "^4.1.10",
@@ -25,16 +24,20 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "favicons-webpack-plugin": "^3.0.1",
     "file-loader": "^6.0.0",
     "group-css-media-queries-loader": "^3.0.2",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "http-server": "^0.12.3",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.2",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-pwa-manifest": "^4.2.0",
+    "workbox-webpack-plugin": "^5.1.3"
   }
 }
